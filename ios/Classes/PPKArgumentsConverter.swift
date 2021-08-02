@@ -39,4 +39,10 @@ class PPKArgumentsConverter {
         return false
     }
 
+    static public func licenseKey(fromArguments arguments: [String: Any]) -> String? {
+        if let licenseKey = arguments["licenseKey"] as? String {
+            return licenseKey
+        }
+        return nil
+    }
 }

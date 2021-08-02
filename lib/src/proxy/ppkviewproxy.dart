@@ -10,14 +10,16 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-class PPKView {
+import "package:ppk_flutter/ppk_flutter.dart";
+
+class PPKViewProxy {
   late MethodChannel _channel;
 
-  PPKView.init(int id, String documentPath, dynamic configuration) {
+  PPKViewProxy.init(int id, String documentPath, PPKConfiguration configuration) {
     _channel = MethodChannel('de.solak.ppk-flutter.widget.$id');
     _channel.invokeMethod<dynamic>('initializePlatformView', <String, dynamic>{
       'document': documentPath,
-      'configuration': configuration,
+      'configuration': configuration.methodChannelRepresentation(),
     });
   }
 

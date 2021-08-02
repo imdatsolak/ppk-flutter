@@ -10,7 +10,7 @@
 
 
 import "package:json_annotation/json_annotation.dart";
-import "ppkprintconfiguration.dart";
+import "package:ppk_flutter/ppk_flutter.dart";
 
 part "ppkdocumentsharingconfiguration.g.dart";
 
@@ -20,7 +20,7 @@ enum PPKDocumentSharingAnnotationOption { embed, flatten, flattenForPrint, summa
 enum PPKDocumentSharingDestination { print, export, activity, messages, email, otherApplicaiton }
 
 @JsonSerializable()
-class PPKDocumentSharingConfiguration {
+class PPKDocumentSharingConfiguration extends PPKMethodChannelObject {
   factory PPKDocumentSharingConfiguration.defaultConfigurationFoDestination(PPKDocumentSharingDestination dest) {
     return PPKDocumentSharingConfiguration();
   }

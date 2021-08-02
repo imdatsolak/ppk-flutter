@@ -9,13 +9,14 @@
  */
 
 import "package:json_annotation/json_annotation.dart";
+import "package:ppk_flutter/ppk_flutter.dart";
 
 part "ppkprintconfiguration.g.dart";
 
 enum PPKPrintMode { interactive, choosePrinterOnly, direct }
 
 @JsonSerializable()
-class PPKPrintConfiguration {
+class PPKPrintConfiguration extends PPKMethodChannelObject {
   PPKPrintMode printMode = PPKPrintMode.interactive;
   // TODO: Unsupported feature
   // defaultPrinter

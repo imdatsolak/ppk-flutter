@@ -33,13 +33,17 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
             arguments = args
         }
         switch call.method {
-            case "frameworkVersion":
+            case "pspdfkitVersion":
                 result("iOS \(SDK.versionNumber)")
             case "setLicenseKey":
-                if let arguments = arguments, let licenseKey = arguments["licenseKey"] as? String {
+                if let arguments = arguments, let licenseKey = PPKArgumentsConverter.licenseKey(fromArguments: arguments) {
                     SDK.setLicenseKey(licenseKey)
                 }
-            case "present":
+            case "presentGlobal":
+                if let arguments = arguments {
+                    self.presentGlobal(arguments)
+                }
+            case "presentGlobalWithWatermark":
                 if let arguments = arguments {
                     self.presentGlobal(arguments)
                 }

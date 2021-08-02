@@ -10,10 +10,7 @@
 
 import "package:flutter/material.dart";
 import "package:json_annotation/json_annotation.dart";
-import "ppkdocumentsharingconfiguration.dart";
-import "ppkdocumentinfoviewconfiguration.dart";
-import "../types/ppktypes.dart";
-import "../utils/auxfunctions.dart";
+import "package:ppk_flutter/ppk_flutter.dart";
 
 part "ppkconfiguration.g.dart";
 
@@ -114,7 +111,7 @@ enum PPKSignatureBiometricPropertiesOption { none, pressure, timePoints, touchRa
 enum PPKSettingsOption { scrollDirection, pageTransition, appearance, brightness, pageMode, spreadFitting, deflt, all }
 
 @JsonSerializable()
-class PPKConfiguration {
+class PPKConfiguration extends PPKMethodChannelObject {
   // Appearance Properties
   PPKPageMode pageMode = PPKPageMode.automatic;
   PPKPageTransition pageTransition = PPKPageTransition.scrollPerSpread;
@@ -351,6 +348,8 @@ class PPKConfiguration {
   });
 
   factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);
+
+  @override
   Map<String, dynamic> toJson() => _$PPKConfigurationToJson(this);
 
 }

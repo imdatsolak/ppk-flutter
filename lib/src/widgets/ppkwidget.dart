@@ -1,24 +1,26 @@
-///
-///  Copyright © 2018-2021 PSPDFKit GmbH. All rights reserved.
-///
-///  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY INTERNATIONAL COPYRIGHT LAW
-///  AND MAY NOT BE RESOLD OR REDISTRIBUTED. USAGE IS BOUND TO THE PSPDFKIT LICENSE AGREEMENT.
-///  UNAUTHORIZED REPRODUCTION OR DISTRIBUTION IS SUBJECT TO CIVIL AND CRIMINAL PENALTIES.
-///  This notice may not be removed from this file.
-///
+/*
+ * **********************************************************************
+ * PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
+ *
+ * Copyright (c) 2021 Imdat Solak (imdat@solak.de)
+ *
+ * For license, check out LICENSE.txt in the root of this repository
+ * **********************************************************************
+ * Based on code from github.com/PSPDFKit/pspdfkit_flutter
+ */
 
-import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:ppk_flutter/src/views/ppkview.dart';
+import "dart:async";
+import "dart:io";
 
-typedef PPKWidgetCreatedCallback = void Function(PPKView view);
+import "package:flutter/cupertino.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:ppk_flutter/ppk_flutter.dart";
 
-/// This widget is currently only supported for iOS.
-/// Support for Android is coming soon.
+typedef PPKWidgetCreatedCallback = void Function(PPKViewProxy view);
+
 class PPKWidget extends StatefulWidget {
   final String documentPath;
   final dynamic configuration;
@@ -36,31 +38,31 @@ class PPKWidget extends StatefulWidget {
 }
 
 class PPKWidgetState extends State<PPKWidget> {
-  late PPKView view;
+  late PPKViewProxy viewProxy;
+
+  Future<void> _onPlatformViewCreated(int id) async {
+    viewProxy = PPKViewProxy.init(id, widget.documentPath, widget.configuration);
+    if (widget.onPPKWidgetCreated != null) {
+      widget.onPPKWidgetCreated!(viewProxy);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    if (Platform.isIOS) {
       return UiKitView(
-        viewType: 'com.pspdfkit.widget',
-        onPlatformViewCreated: onPlatformViewCreated,
+        viewType: "de.solak.ppk-flutter.widget",
+        onPlatformViewCreated: _onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
       );
-    } else if (defaultTargetPlatform == TargetPlatform.android) {
+    } else if (Platform.isAndroid) {
       return AndroidView(
-        viewType: 'com.pspdfkit.widget',
-        onPlatformViewCreated: onPlatformViewCreated,
+        viewType: "de.solak.ppk-flutter.widget",
+        onPlatformViewCreated: _onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
       );
     } else {
       return Text('$defaultTargetPlatform is not yet supported by pspdfkit.');
-    }
-  }
-
-  Future<void> onPlatformViewCreated(int id) async {
-    view = PPKView.init(id, widget.documentPath, widget.configuration);
-    if (widget.onPPKWidgetCreated != null) {
-      widget.onPPKWidgetCreated!(view);
     }
   }
 }

@@ -9,11 +9,12 @@
  */
 
 import "package:json_annotation/json_annotation.dart";
+import "package:ppk_flutter/ppk_flutter.dart";
 
 part "ppkdocumentinfoviewconfiguration.g.dart";
 
 @JsonSerializable()
-class PPKDocumentInfoViewConfiguration {
+class PPKDocumentInfoViewConfiguration extends PPKMethodChannelObject {
   bool outline = true;
   bool annotations = true;
   bool embeddedFiles = true;
