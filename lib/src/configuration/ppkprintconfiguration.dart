@@ -26,5 +26,7 @@ class PPKPrintConfiguration extends PPKMethodChannelObject {
   });
 
   factory PPKPrintConfiguration.fromJson(Map<String, dynamic> json) => _$PPKPrintConfigurationFromJson(json);
+
+  @override
   Map<String, dynamic> toJson() => _$PPKPrintConfigurationToJson(this);
 }

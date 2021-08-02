@@ -32,5 +32,7 @@ class PPKDocumentInfoViewConfiguration extends PPKMethodChannelObject {
   });
 
   factory PPKDocumentInfoViewConfiguration.fromJson(Map<String, dynamic> json) => _$PPKDocumentInfoViewConfigurationFromJson(json);
+
+  @override
   Map<String, dynamic> toJson() => _$PPKDocumentInfoViewConfigurationToJson(this);
 }

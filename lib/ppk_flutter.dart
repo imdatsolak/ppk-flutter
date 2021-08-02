@@ -21,8 +21,6 @@ export "src/configuration/ppkdocumentinfoviewconfiguration.dart";
 export "src/types/ppktypes.dart";
 export "src/types/ppkmethodchannelobject.dart";
 export "src/utils/auxfunctions.dart";
-export "src/utils/android_permission_status.dart";
-export "src/utils/configuration_options.dart";
 export "src/proxy/ppkproxy.dart";
 export "src/proxy/ppkviewproxy.dart";
 export "src/widgets/ppkwidget.dart";

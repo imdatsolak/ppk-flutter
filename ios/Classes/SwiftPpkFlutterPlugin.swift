@@ -41,18 +41,18 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
                 }
             case "presentGlobal":
                 if let arguments = arguments {
-                    self.presentGlobal(arguments)
+                    self.presentGlobal(arguments, result: result)
                 }
             case "presentGlobalWithWatermark":
                 if let arguments = arguments {
-                    self.presentGlobal(arguments)
+                    self.presentGlobal(arguments, result: result)
                 }
             default:
                 PPKHelper.processMethod(call: call, result: result, forViewController: self.pdfViewController)
         }
     }
 
-    private func presentGlobal(_ arguments: [String: Any]) {
+    private func presentGlobal(_ arguments: [String: Any], result: @escaping FlutterResult) {
         if let documentPath = PPKArgumentsConverter.documentPath(fromArguments: arguments), documentPath.count > 0, let pdfDocument = PPKHelper.documentFrom(path: documentPath) {
             let configuration = PPKArgumentsConverter.configuration(fromArguments: arguments)
             if let password = configuration.documentPassword {

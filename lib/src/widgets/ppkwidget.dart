@@ -24,13 +24,13 @@ typedef PPKWidgetCreatedCallback = void Function(PPKViewProxy view);
 class PPKWidget extends StatefulWidget {
   final String documentPath;
   final dynamic configuration;
-  final PPKWidgetCreatedCallback? onPPKWidgetCreated;
+  final PPKWidgetCreatedCallback? onWidgetCreated;
 
   PPKWidget({
     Key? key,
     required this.documentPath,
     this.configuration,
-    this.onPPKWidgetCreated,
+    this.onWidgetCreated,
   }) : super(key: key);
 
   @override
@@ -42,8 +42,8 @@ class PPKWidgetState extends State<PPKWidget> {
 
   Future<void> _onPlatformViewCreated(int id) async {
     viewProxy = PPKViewProxy.init(id, widget.documentPath, widget.configuration);
-    if (widget.onPPKWidgetCreated != null) {
-      widget.onPPKWidgetCreated!(viewProxy);
+    if (widget.onWidgetCreated != null) {
+      widget.onWidgetCreated!(viewProxy);
     }
   }
 
@@ -62,7 +62,7 @@ class PPKWidgetState extends State<PPKWidget> {
         creationParamsCodec: const StandardMessageCodec(),
       );
     } else {
-      return Text('$defaultTargetPlatform is not yet supported by pspdfkit.');
+      return Text("$defaultTargetPlatform is not yet supported by pspdfkit.");
     }
   }
 }

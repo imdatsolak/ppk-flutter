@@ -54,8 +54,8 @@ class PPKProxy {
     return await _channel.invokeMethod(
         "presentGlobal",
         <String, dynamic>{
-          "document": document, "configuration":
-          configuration.methodChannelRepresentation(),
+          "document": document,
+          "configuration": configuration.methodChannelRepresentation(),
         },
       );
   }
@@ -73,49 +73,51 @@ class PPKProxy {
 
   Future<void> _platformCallHandler(MethodCall call) {
     VoidCallback? _callToMake;
-    try {
-      switch (call.method) {
-        case "pdfActivityCreated":
-          _callToMake = pdfActivityOnCreate;
-          break;
-        case "pdfActivityStarted":
-          _callToMake = pdfActivityOnStart;
-          break;
-        case "pdfActivityPause":
-          _callToMake = pdfActivityOnPause;
-          break;
-        case "pdfActivityResumed":
-          _callToMake = pdfActivityOnResume;
-          break;
-        case "pdfActivityStopped":
-          _callToMake = pdfActivityOnStop;
-          break;
-        case "pdfActivityRestarted":
-          _callToMake = pdfActivityOnRestart;
-          break;
-        case "pdfActivityDestroyed":
-          _callToMake = pdfActivityOnDestroy;
-          break;
-        case "pdfViewControllerWillDismiss":
-          _callToMake = pdfViewControllerWillDismiss;
-          break;
-        case "pdfViewControllerDidDismiss":
-          _callToMake = pdfViewControllerDidDismiss;
-          break;
-        case "pdfActivityDocumentLoaded":
-          _callToMake = pdfActivityOnDocumentLoaded;
-          break;
-        case "pdfActivityDocumentLoadFailed":
-          _callToMake = pdfActivityOnDocumentLoadFailed;
-          break;
-        default:
-          print("Unknowm method ${call.method} ");
-      }
-      if (_callToMake != null) {
+    switch (call.method) {
+      // Android related Callbacks
+      case "pdfActivityCreated":
+        _callToMake = pdfActivityOnCreate;
+        break;
+      case "pdfActivityStarted":
+        _callToMake = pdfActivityOnStart;
+        break;
+      case "pdfActivityPause":
+        _callToMake = pdfActivityOnPause;
+        break;
+      case "pdfActivityResumed":
+        _callToMake = pdfActivityOnResume;
+        break;
+      case "pdfActivityStopped":
+        _callToMake = pdfActivityOnStop;
+        break;
+      case "pdfActivityRestarted":
+        _callToMake = pdfActivityOnRestart;
+        break;
+      case "pdfActivityDestroyed":
+        _callToMake = pdfActivityOnDestroy;
+        break;
+      // iOS Related Callbacks
+      case "pdfViewControllerWillDismiss":
+        _callToMake = pdfViewControllerWillDismiss;
+        break;
+      case "pdfViewControllerDidDismiss":
+        _callToMake = pdfViewControllerDidDismiss;
+        break;
+      // Document related Callbacks
+      case "pdfActivityDocumentLoaded":
+        _callToMake = pdfActivityOnDocumentLoaded;
+        break;
+      case "pdfActivityDocumentLoadFailed":
+        _callToMake = pdfActivityOnDocumentLoadFailed;
+        break;
+      default:
+        print("Unknowm method ${call.method} ");
+    }
+    if (_callToMake != null) {
+      try {
         _callToMake();
+      } catch (e) {
       }
-    } catch (e) {
-      print(e);
     }
     return Future.value();
   }

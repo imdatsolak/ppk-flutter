@@ -46,7 +46,7 @@ public class PPKPlatformView : NSObject, FlutterPlatformView {
     public func handleMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "initializePlatformView") {
             if let args = call.arguments as? [String:Any], let documentPath = args["document"] as? String, let document = PPKHelper.documentFrom(path: documentPath) {
-                let configuration = PPKArgumentsConverter.configuration(fromArguments: arguments)
+                let configuration = PPKArgumentsConverter.configuration(fromArguments: args)
                 if let password = configuration.documentPassword {
                     PPKHelper.unlock(document: document, usingPassword: password)
                 }

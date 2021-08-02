@@ -47,5 +47,7 @@ class PPKDocumentSharingConfiguration extends PPKMethodChannelObject {
   });
 
   factory PPKDocumentSharingConfiguration.fromJson(Map<String, dynamic> json) => _$PPKDocumentSharingConfigurationFromJson(json);
+
+  @override
   Map<String, dynamic> toJson() => _$PPKDocumentSharingConfigurationToJson(this);
 }

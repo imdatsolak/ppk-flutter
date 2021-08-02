@@ -110,29 +110,25 @@ class PPKHelper {
     }
     
     static public func handleMethodCall(_ call: FlutterMethodCall, withViewController: PDFViewController, result: @escaping FlutterResult) {
-        if let method = call.method {
-            switch (method) {
-                case "save":
-                    NSLog("Save")
-                case "applyInstantJson":
-                    NSLog("applyInstantJson")
-                case "exportInstantJson":
-                    NSLog("exportInstantJson")
-                case "addAnnotation":
-                    NSLog("addAnnotation")
-                case "removeAnnotation":
-                    NSLog("removeAnnotation")
-                case "getAnnotations":
-                    NSLog("getAnnotations")
-                case "exportXfdf":
-                    NSLog("exportXdfdf")
-                case "processAnnotations":
-                    NSLog("processAnnotations")
-                default:
-                    result(FlutterMethodNotImplemented)
-            }
-        } else {
-            result(false);
+        switch (call.method) {
+            case "save":
+                NSLog("Save")
+            case "applyInstantJson":
+                NSLog("applyInstantJson")
+            case "exportInstantJson":
+                NSLog("exportInstantJson")
+            case "addAnnotation":
+                NSLog("addAnnotation")
+            case "removeAnnotation":
+                NSLog("removeAnnotation")
+            case "getAnnotations":
+                NSLog("getAnnotations")
+            case "exportXfdf":
+                NSLog("exportXdfdf")
+            case "processAnnotations":
+                NSLog("processAnnotations")
+            default:
+                result(FlutterMethodNotImplemented)
         }
     }
 }

@@ -17,7 +17,7 @@ part "ppkconfiguration.g.dart";
 // Appearance Properties
 enum PPKPageMode { single, double, automatic }
 enum PPKPageTransition { scrollPerSpread, scrollContinuous, curl }
-enum PPKConfigurationSpreadFitting { fit, fill, adaptive }
+enum PPKSpreadFitting { fit, fill, adaptive }
 enum PPKAppearanceMode { deflt, sepia, night, all }
 
 // Scroll View Configuration
@@ -64,11 +64,8 @@ enum PPKAnnotationType {
   line,
   polygon,
   polyLine,
-  signature,
   stamp,
-  eraser,
   sound,
-  image,
   redaction,
   widget,
   file,
@@ -95,7 +92,7 @@ enum PPKScrubberBarType { horizontal, verticalLeft, verticalRight }
 enum PPKThumbnailGrouping { automatic, never, always }
 
 // Annotation Settings
-enum PPKMarkupAnnotationMergeBehavior { mergeNever, mergeIfColorMatches }
+enum PPKMarkupAnnotationMergeBehavior { never, ifColorMatches }
 enum PPKDrawCreateMode { separate, mergeIfPossible, automatic }
 enum PPKSoundAnnotationPlayerStyle { inline, bottom }
 
@@ -116,7 +113,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKPageMode pageMode = PPKPageMode.automatic;
   PPKPageTransition pageTransition = PPKPageTransition.scrollPerSpread;
   bool firstPageAlwaysSingle = true;
-  PPKConfigurationSpreadFitting spreadFitting = PPKConfigurationSpreadFitting.adaptive;
+  PPKSpreadFitting spreadFitting = PPKSpreadFitting.adaptive;
   bool clipToPageBoundaries = true;
   PPKEdgeInsets? additionalScrollViewFrameInsets = PPKEdgeInsets();
   PPKEdgeInsets? additionalContentInsets = PPKEdgeInsets();
@@ -264,7 +261,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.pageMode = PPKPageMode.automatic,
     this.pageTransition = PPKPageTransition.scrollPerSpread,
     this.firstPageAlwaysSingle = true,
-    this.spreadFitting = PPKConfigurationSpreadFitting.adaptive,
+    this.spreadFitting = PPKSpreadFitting.adaptive,
     this.clipToPageBoundaries = true,
     this.additionalScrollViewFrameInsets,
     this.additionalContentInsets,
