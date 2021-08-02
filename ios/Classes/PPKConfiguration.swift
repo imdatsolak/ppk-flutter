@@ -50,4 +50,37 @@ class PPKConfiguration {
             return 0
         }
     }
+    
+    public var rightBarButtonItems: [String]? {
+        get {
+            if let barButtonItems = _configurationDictionary["rightBarButtonItems"] as? [String] {
+                return barButtonItems
+            }
+            return nil
+        }
+    }
+    
+    public var leftBarButtonItems: [String]? {
+        get {
+            if let barButtonItems = _configurationDictionary["leftBarButtonItems"] as? [String] {
+                return barButtonItems
+            }
+            return nil
+        }
+    }
+    
+    public var toolbarTitle: String? {
+        get {
+            if let title = _configurationDictionary["toolbarTitle"] as? String {
+                return title
+            }
+            return nil
+        }
+    }
+    
+    public var documentInfoOptions: [DocumentInfoOption]? {
+        get {
+            return nil
+        }
+    }
 }

@@ -49,38 +49,32 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     private func presentGlobal(_ arguments: [String: Any]) {
-        if let documentPath = PPKArgumentsConverter.documentPath(fromArguments: arguments), documentPath.count > 0 {
+        if let documentPath = PPKArgumentsConverter.documentPath(fromArguments: arguments), documentPath.count > 0, let pdfDocument = PPKHelper.documentFrom(path: documentPath) {
             let configuration = PPKArgumentsConverter.configuration(fromArguments: arguments)
-            if let pdfDocument = PPKHelper.documentFrom(path: documentPath) {
-                if let password = configuration.documentPassword {
-                    PPKHelper.unlock(document: pdfDocument, usingPassword: password)
-                }
-                self.pdfViewController = PDFViewController(document: pdfDocument, configuration: configuration.pdfConfiguration)
-                self.pdfViewController?.appearanceModeManager.appearanceMode = configuration.appearanceMode
-                self.pdfViewController?.pageIndex = configuration.pageIndex
-                self.pdfViewController?.delegate = self
-                if let documentInfoOptions = PPKArgumentsConverter.documentInfoOptions(fromArguments: arguments) {
-                    self.pdfViewController?.documentInfoCoordinator.availableControllerOptions = documentInfoOptions
-                }
-                /*
-                if ((id)configurationDictionary != NSNull.null) {
-                    [PspdfkitFlutterHelper setLeftBarButtonItems:configurationDictionary[@"leftBarButtonItems"] forViewController:self.pdfViewController];
-                    [PspdfkitFlutterHelper setRightBarButtonItems:configurationDictionary[@"rightBarButtonItems"] forViewController:self.pdfViewController];
-                    [PspdfkitFlutterHelper setToolbarTitle:configurationDictionary[@"toolbarTitle"] forViewController:self.pdfViewController];
-                }
-
-                PSPDFNavigationController *navigationController = [[PSPDFNavigationController alloc] initWithRootViewController:self.pdfViewController];
-                navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
-                UIViewController *presentingViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-                [presentingViewController presentViewController:navigationController animated:YES completion:nil];
-                result(@(YES));
-                 */
+            if let password = configuration.documentPassword {
+                PPKHelper.unlock(document: pdfDocument, usingPassword: password)
             }
+            let pdfViewController = PDFViewController(document: pdfDocument, configuration: configuration.pdfConfiguration)
+            pdfViewController.appearanceModeManager.appearanceMode = configuration.appearanceMode
+            pdfViewController.pageIndex = configuration.pageIndex
+            pdfViewController.delegate = self
+            if let documentInfoOptions = configuration.documentInfoOptions {
+                pdfViewController.documentInfoCoordinator.availableControllerOptions = documentInfoOptions
+            }
+            PPKHelper.setLeftBarButtonItems(configuration.leftBarButtonItems, forViewController: pdfViewController)
+            PPKHelper.setRightBarButtonItems(configuration.rightBarButtonItems, forViewController: pdfViewController)
+            PPKHelper.setToolbarTitle(configuration.toolbarTitle, forViewController: pdfViewController)
+            self.pdfViewController = pdfViewController
+            let navController = PDFNavigationController(rootViewController: pdfViewController)
+            navController.modalPresentationStyle = .fullScreen
+            let presentingViewController = UIApplication.shared.delegate?.window??.rootViewController;
+            presentingViewController?.present(navController, animated: false, completion: nil)
+            result(true)
+        } else {
+            let error = FlutterError(code: "", message: "Document path may not be nil or empty", details: nil)
+            result(error)
         }
-        
-
     }
-
 }
 
 extension SwiftPpkFlutterPlugin: PDFViewControllerDelegate {

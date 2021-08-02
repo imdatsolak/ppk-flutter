@@ -45,4 +45,7 @@ class PPKDocumentSharingConfiguration {
     this.destination = PPKDocumentSharingDestination.print,
     this.printConfiguration,
   });
+
+  factory PPKDocumentSharingConfiguration.fromJson(Map<String, dynamic> json) => _$PPKDocumentSharingConfigurationFromJson(json);
+  Map<String, dynamic> toJson() => _$PPKDocumentSharingConfigurationToJson(this);
 }

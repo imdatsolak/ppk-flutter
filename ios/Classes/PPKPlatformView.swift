@@ -44,47 +44,31 @@ public class PPKPlatformView : NSObject, FlutterPlatformView {
     }
     
     public func handleMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-/*
-         if ([@"initializePlatformView" isEqualToString:call.method]) {
-             NSArray<PSPDFDocumentInfoOption> *documentInfoOptions;
-             NSString *documentPath = call.arguments[@"document"];
-
-             if (documentPath == nil || documentPath.length <= 0) {
-                 FlutterError *error = [FlutterError errorWithCode:@"" message:@"Document path may not be nil or empty." details:nil];
-                 result(error);
-                 return;
-             }
-
-             NSDictionary *configurationDictionary = call.arguments[@"configuration"];
-
-             PSPDFDocument *document = [PspdfkitFlutterHelper documentFromPath:documentPath];
-             [PspdfkitFlutterHelper unlockWithPasswordIfNeeded:document dictionary:configurationDictionary];
-
-             BOOL isImageDocument = [PspdfkitFlutterHelper isImageDocument:documentPath];
-             PSPDFConfiguration *configuration = [PspdfkitFlutterConverter configuration:configurationDictionary isImageDocument:isImageDocument];
-
-             self.pdfViewController = [[PSPDFViewController alloc] initWithDocument:document configuration:configuration];
-             self.pdfViewController.appearanceModeManager.appearanceMode = [PspdfkitFlutterConverter appearanceMode:configurationDictionary];
-             self.pdfViewController.pageIndex = [PspdfkitFlutterConverter pageIndex:configurationDictionary];
-             self.pdfViewController.delegate = self;
-             documentInfoOptions = [PspdfkitFlutterConverter documentInfoOptions:configurationDictionary];
-             if (documentInfoOptions) {
-                 self.pdfViewController.documentInfoCoordinator.availableControllerOptions = documentInfoOptions;
-             }
-
-             if ((id)configurationDictionary != NSNull.null) {
-                 [PspdfkitFlutterHelper setLeftBarButtonItems:configurationDictionary[@"leftBarButtonItems"] forViewController:self.pdfViewController];
-                 [PspdfkitFlutterHelper setRightBarButtonItems:configurationDictionary[@"rightBarButtonItems"] forViewController:self.pdfViewController];
-                 [PspdfkitFlutterHelper setToolbarTitle:configurationDictionary[@"toolbarTitle"] forViewController:self.pdfViewController];
-             }
-
-             [self.navigationController setViewControllers:@[self.pdfViewController] animated:NO];
-             result(@(YES));
-         } else {
-             [PspdfkitFlutterHelper processMethodCall:call result:result forViewController:self.pdfViewController];
-         }
-
-         */
+        if (call.method == "initializePlatformView") {
+            if let args = call.arguments as? [String:Any], let documentPath = args["document"] as? String, let document = PPKHelper.documentFrom(path: documentPath) {
+                let configuration = PPKArgumentsConverter.configuration(fromArguments: arguments)
+                if let password = configuration.documentPassword {
+                    PPKHelper.unlock(document: document, usingPassword: password)
+                }
+                self.pdfViewController = PDFViewController(document: document, configuration: configuration.pdfConfiguration)
+                self.pdfViewController.appearanceModeManager.appearanceMode = configuration.appearanceMode
+                self.pdfViewController.pageIndex = configuration.pageIndex
+                self.pdfViewController.delegate = self
+                if let documentInfoOptions = configuration.documentInfoOptions {
+                    self.pdfViewController.documentInfoCoordinator.availableControllerOptions = documentInfoOptions
+                }
+                PPKHelper.setLeftBarButtonItems(configuration.leftBarButtonItems, forViewController: self.pdfViewController)
+                PPKHelper.setRightBarButtonItems(configuration.rightBarButtonItems, forViewController: self.pdfViewController)
+                PPKHelper.setToolbarTitle(configuration.toolbarTitle, forViewController: self.pdfViewController)
+                self.navigationController.setViewControllers([self.pdfViewController], animated: false)
+                result(true)
+            } else {
+                let error = FlutterError(code: "", message: "Document path may not be nil or empty", details: nil)
+                result(error)
+            }
+        } else {
+            PPKHelper.handleMethodCall(call, withViewController: self.pdfViewController, result: result)
+        }
     }
     
     private func cleanup() {

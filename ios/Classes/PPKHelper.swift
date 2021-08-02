@@ -44,8 +44,10 @@ class PPKHelper {
         }
     }
 
-    static public func setToolbarTitle(_ title: String, forViewController pdfViewController: PDFViewController) {
-        pdfViewController.title = title
+    static public func setToolbarTitle(_ title: String?, forViewController pdfViewController: PDFViewController) {
+        if let title = title {
+            pdfViewController.title = title
+        }
     }
 
     static public func setLeftBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController) {
@@ -104,6 +106,33 @@ class PPKHelper {
                 return pdfViewController.readerViewButtonItem;
             default:
                 return nil
+        }
+    }
+    
+    static public func handleMethodCall(_ call: FlutterMethodCall, withViewController: PDFViewController, result: @escaping FlutterResult) {
+        if let method = call.method {
+            switch (method) {
+                case "save":
+                    NSLog("Save")
+                case "applyInstantJson":
+                    NSLog("applyInstantJson")
+                case "exportInstantJson":
+                    NSLog("exportInstantJson")
+                case "addAnnotation":
+                    NSLog("addAnnotation")
+                case "removeAnnotation":
+                    NSLog("removeAnnotation")
+                case "getAnnotations":
+                    NSLog("getAnnotations")
+                case "exportXfdf":
+                    NSLog("exportXdfdf")
+                case "processAnnotations":
+                    NSLog("processAnnotations")
+                default:
+                    result(FlutterMethodNotImplemented)
+            }
+        } else {
+            result(false);
         }
     }
 }

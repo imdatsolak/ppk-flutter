@@ -23,4 +23,7 @@ class PPKPrintConfiguration {
   PPKPrintConfiguration({
     this.printMode = PPKPrintMode.interactive,
   });
+
+  factory PPKPrintConfiguration.fromJson(Map<String, dynamic> json) => _$PPKPrintConfigurationFromJson(json);
+  Map<String, dynamic> toJson() => _$PPKPrintConfigurationToJson(this);
 }

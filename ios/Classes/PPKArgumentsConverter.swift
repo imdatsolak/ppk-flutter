@@ -26,10 +26,6 @@ class PPKArgumentsConverter {
         return PPKConfiguration(fromArguments: arguments, isImageDocument: isImageDocument)
     }
 
-    static func documentInfoOptions(fromArguments arguments: [String: Any]) -> [DocumentInfoOption]? {
-        return nil
-    }
-
     static public func isImageDocument(_ documentPath: String) -> Bool {
         let url: URL?
         if (documentPath.starts(with: "/")) {

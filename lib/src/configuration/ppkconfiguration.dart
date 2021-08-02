@@ -349,4 +349,8 @@ class PPKConfiguration {
     this.selectedSharingDestination,
     this.settingsOptions,
   });
+
+  factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);
+  Map<String, dynamic> toJson() => _$PPKConfigurationToJson(this);
+
 }
