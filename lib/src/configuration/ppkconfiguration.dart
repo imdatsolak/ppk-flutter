@@ -107,6 +107,10 @@ enum PPKSignatureBiometricPropertiesOption { none, pressure, timePoints, touchRa
 // Settings Options
 enum PPKSettingsOption { scrollDirection, pageTransition, appearance, brightness, pageMode, spreadFitting, deflt, all }
 
+
+// BarButtons
+enum PPKBarButtonItem { closeButtonItem, outlineButtonItem, searchButtonItem, thumbnailsButtonItem, documentEditorButtonItem, printButtonItem, openInButtonItem, emailButtonItem, messageButtonItem, annotationButtonItem, bookmarkButtonItem, brightnessButtonItem, activityButtonItem, settingsButtonItem, readerViewButtonItem }
+
 @JsonSerializable()
 class PPKConfiguration extends PPKMethodChannelObject {
   // Appearance Properties
@@ -119,7 +123,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKEdgeInsets? additionalContentInsets = PPKEdgeInsets();
   bool shadowEnabled = false;
   double shadowOpacity = 0.7;
-  PPKDocumentInfoViewConfiguration? documentInfoViewConfiguration;
+  PPKDocumentInfoViewConfiguration? documentInfoOptions;
 
   @JsonKey(fromJson: colorFromJson, toJson: colorToJson)
   Color? backgroundColor;
@@ -203,7 +207,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
   // Annotation Settings
   double annotationAnimationDuration = 0.25;
   bool annotationGroupingEnabled = true;
-  PPKMarkupAnnotationMergeBehavior markupAnnotationMergeBehavior = PPKMarkupAnnotationMergeBehavior.mergeIfColorMatches;
+  PPKMarkupAnnotationMergeBehavior markupAnnotationMergeBehavior = PPKMarkupAnnotationMergeBehavior.ifColorMatches;
   bool createAnnotationMenuEnabled = true;
   // TODO: Unsupported Feature for now
   // createAnnotationMenuGroups
@@ -238,7 +242,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
   // Sharing
   PPKDocumentSharingConfiguration? sharingConfigurations;
   PPKDocumentSharingDestination? selectedSharingDestination;
-  List<PPKSettingsOption>? settingsOptions = [PPKSettingsOption.deflt];
 
   /* **** UNSUPPORTED YET *****
   // Advanced Properties
@@ -257,6 +260,13 @@ class PPKConfiguration extends PPKMethodChannelObject {
   documentEditorConfiguration
   signatureCreationConfiguration
   */
+
+  String? documentPassword;
+  int pageIndex = 0;
+  String? toolbarTitle;
+  List<PPKBarButtonItem>? rightBarButtonItems;
+  List<PPKBarButtonItem>? leftBarButtonItems;
+
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
     this.pageTransition = PPKPageTransition.scrollPerSpread,
@@ -321,7 +331,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.thumbnailMargin,
     this.annotationAnimationDuration = 0.25,
     this.annotationGroupingEnabled = true,
-    this.markupAnnotationMergeBehavior = PPKMarkupAnnotationMergeBehavior.mergeIfColorMatches,
+    this.markupAnnotationMergeBehavior = PPKMarkupAnnotationMergeBehavior.ifColorMatches,
     this.createAnnotationMenuEnabled = true,
     this.naturalDrawingAnnotationEnabled = false,
     this.magicInkReplacementThreshold = 70,
@@ -341,7 +351,11 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.naturalSignatureDrawingEnabled = true,
     this.sharingConfigurations,
     this.selectedSharingDestination,
-    this.settingsOptions,
+    this.documentPassword,
+    this.pageIndex = 0,
+    this.toolbarTitle,
+    this.rightBarButtonItems,
+    this.leftBarButtonItems,
   });
 
   factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);
