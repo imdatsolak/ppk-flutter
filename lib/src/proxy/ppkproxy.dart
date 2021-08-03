@@ -32,7 +32,7 @@ class PPKProxy {
 
   late MethodChannel _channel;
 
-  PPKProxy instance = PPKProxy._privateConstructor();
+  static PPKProxy instance = PPKProxy._privateConstructor();
 
   PPKProxy._privateConstructor() {
     _channel = const MethodChannel("de.solak.ppk-flutter.global");
@@ -50,7 +50,10 @@ class PPKProxy {
     );
   }
 
-  Future<bool?> presentGlobal(String document, PPKConfiguration configuration) async {
+  Future<bool?> presentGlobal(String document, { PPKConfiguration? configuration }) async {
+    if (configuration == null) {
+      configuration = PPKConfiguration();
+    }
     return await _channel.invokeMethod(
         "presentGlobal",
         <String, dynamic>{
@@ -60,7 +63,10 @@ class PPKProxy {
       );
   }
 
-  Future<bool?> presentGlobalWithWatermark(String document, String watermarkString, PPKConfiguration configuration) async {
+  Future<bool?> presentGlobalWithWatermark(String document, String watermarkString, { PPKConfiguration? configuration}) async {
+    if (configuration == null) {
+      configuration = PPKConfiguration();
+    }
     return await _channel.invokeMethod(
         "presentGlobalWithWatermark",
         <String, dynamic>{
