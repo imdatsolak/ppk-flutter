@@ -23,7 +23,7 @@ typedef PPKWidgetCreatedCallback = void Function(PPKViewProxy view);
 class PPKWidget extends StatefulWidget {
   final String documentPath;
   final PPKConfiguration? configuration;
-  final PPKWidgetCreatedCallback? onWidgetCreated;
+  final PPKWidgetCreatedCallback? onProxyCreated;
 
   PPKWidget({
     Key? key,
@@ -41,8 +41,8 @@ class PPKWidgetState extends State<PPKWidget> {
 
   Future<void> _onPlatformViewCreated(int id) async {
     viewProxy = PPKViewProxy.init(id, widget.documentPath, configuration: widget.configuration);
-    if (widget.onWidgetCreated != null) {
-      widget.onWidgetCreated!(viewProxy);
+    if (widget.onProxyCreated != null) {
+      widget.onProxyCreated!(viewProxy);
     }
   }
 
