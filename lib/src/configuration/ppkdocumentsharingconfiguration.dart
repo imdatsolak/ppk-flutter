@@ -8,7 +8,6 @@
  * **********************************************************************
  */
 
-
 import "package:json_annotation/json_annotation.dart";
 import "package:ppk_flutter/ppk_flutter.dart";
 

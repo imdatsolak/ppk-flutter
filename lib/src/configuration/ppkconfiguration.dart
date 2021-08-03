@@ -107,9 +107,24 @@ enum PPKSignatureBiometricPropertiesOption { none, pressure, timePoints, touchRa
 // Settings Options
 enum PPKSettingsOption { theme, appearance, scrollDirection, pageTransition, brightness, pageMode, spreadFitting, deflt, all }
 
-
 // BarButtons
-enum PPKBarButtonItem { closeButtonItem, outlineButtonItem, searchButtonItem, thumbnailsButtonItem, documentEditorButtonItem, printButtonItem, openInButtonItem, emailButtonItem, messageButtonItem, annotationButtonItem, bookmarkButtonItem, brightnessButtonItem, activityButtonItem, settingsButtonItem, readerViewButtonItem }
+enum PPKBarButtonItem {
+  closeButtonItem,
+  outlineButtonItem,
+  searchButtonItem,
+  thumbnailsButtonItem,
+  documentEditorButtonItem,
+  printButtonItem,
+  openInButtonItem,
+  emailButtonItem,
+  messageButtonItem,
+  annotationButtonItem,
+  bookmarkButtonItem,
+  brightnessButtonItem,
+  activityButtonItem,
+  settingsButtonItem,
+  readerViewButtonItem
+}
 
 @JsonSerializable()
 class PPKConfiguration extends PPKMethodChannelObject {
@@ -374,5 +389,4 @@ class PPKConfiguration extends PPKMethodChannelObject {
 
   @override
   Map<String, dynamic> toJson() => _$PPKConfigurationToJson(this);
-
 }

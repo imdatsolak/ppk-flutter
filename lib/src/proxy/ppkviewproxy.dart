@@ -15,7 +15,7 @@ import "package:ppk_flutter/ppk_flutter.dart";
 class PPKViewProxy {
   late MethodChannel _channel;
 
-  PPKViewProxy.init(int id, String documentPath, { PPKConfiguration? configuration}) {
+  PPKViewProxy.init(int id, String documentPath, {PPKConfiguration? configuration}) {
     if (configuration == null) {
       configuration = PPKConfiguration();
     }

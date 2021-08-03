@@ -1,10 +1,12 @@
-/* *****************************************************************************************************
-   PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
-
-   Copyright (c) 2021 Imdat Solak (imdat@solak.de)
-
-   For license, checkout LICENSE.txt in the root of this repository
-*/
+/*
+ * **********************************************************************
+ * PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
+ *
+ * Copyright (c) 2021 Imdat Solak (imdat@solak.de)
+ *
+ * For license, check out LICENSE.txt in the root of this repository
+ * **********************************************************************
+ */
 
 import Foundation
 import Flutter
@@ -108,7 +110,7 @@ class PPKHelper {
                 return nil
         }
     }
-    
+
     static public func handleMethodCall(_ call: FlutterMethodCall, withViewController: PDFViewController, result: @escaping FlutterResult) {
         switch (call.method) {
             case "save":

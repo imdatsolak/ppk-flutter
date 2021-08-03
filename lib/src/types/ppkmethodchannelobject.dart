@@ -17,4 +17,3 @@ class PPKMethodChannelObject {
     return this.toJson();
   }
 }
-

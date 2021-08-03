@@ -8,7 +8,6 @@
  * **********************************************************************
  */
 
-
 import "package:flutter/material.dart";
 
 Map<String, dynamic>? colorToJson(Color? color) {

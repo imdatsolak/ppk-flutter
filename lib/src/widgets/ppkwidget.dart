@@ -9,7 +9,6 @@
  * Based on code from github.com/PSPDFKit/pspdfkit_flutter
  */
 
-
 import "dart:async";
 import "dart:io";
 

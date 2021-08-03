@@ -9,7 +9,6 @@
  * Some code is based on github.com/PSPDFKit/pspdfkit_flutter
  */
 
-
 import "dart:async";
 import "dart:ui";
 
@@ -42,7 +41,7 @@ class PPKProxy {
   Future<String?> get pspdfkitVersion async => _channel.invokeMethod("pspdfkitVersion");
 
   Future<void> setLicenseKey(String licenseKey) async {
-    return  await _channel.invokeMethod(
+    return await _channel.invokeMethod(
       "setLicenseKey",
       <String, String>{
         "licenseKey": licenseKey,
@@ -50,31 +49,31 @@ class PPKProxy {
     );
   }
 
-  Future<bool?> presentGlobal(String document, { PPKConfiguration? configuration }) async {
+  Future<bool?> presentGlobal(String document, {PPKConfiguration? configuration}) async {
     if (configuration == null) {
       configuration = PPKConfiguration();
     }
     return await _channel.invokeMethod(
-        "presentGlobal",
-        <String, dynamic>{
-          "document": document,
-          "configuration": configuration.methodChannelRepresentation(),
-        },
-      );
+      "presentGlobal",
+      <String, dynamic>{
+        "document": document,
+        "configuration": configuration.methodChannelRepresentation(),
+      },
+    );
   }
 
-  Future<bool?> presentGlobalWithWatermark(String document, String watermarkString, { PPKConfiguration? configuration}) async {
+  Future<bool?> presentGlobalWithWatermark(String document, String watermarkString, {PPKConfiguration? configuration}) async {
     if (configuration == null) {
       configuration = PPKConfiguration();
     }
     return await _channel.invokeMethod(
-        "presentGlobalWithWatermark",
-        <String, dynamic>{
-          "document": document,
-          "watermarkString": watermarkString,
-          "configuration": configuration.methodChannelRepresentation(),
-        },
-      );
+      "presentGlobalWithWatermark",
+      <String, dynamic>{
+        "document": document,
+        "watermarkString": watermarkString,
+        "configuration": configuration.methodChannelRepresentation(),
+      },
+    );
   }
 
   Future<void> _platformCallHandler(MethodCall call) {
@@ -122,8 +121,7 @@ class PPKProxy {
     if (_callToMake != null) {
       try {
         _callToMake();
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     return Future.value();
   }

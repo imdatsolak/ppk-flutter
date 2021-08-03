@@ -1,10 +1,12 @@
-/* *****************************************************************************************************
-   PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
-
-   Copyright (c) 2021 Imdat Solak (imdat@solak.de)
-
-   For license, checkout LICENSE.txt in the root of this repository
-*/
+/*
+ * **********************************************************************
+ * PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
+ *
+ * Copyright (c) 2021 Imdat Solak (imdat@solak.de)
+ *
+ * For license, check out LICENSE.txt in the root of this repository
+ * **********************************************************************
+ */
 
 import Foundation
 import PSPDFKit
@@ -240,7 +242,7 @@ let signatureCertificateSelectionModeMap: [String: SignatureCertificateSelection
 ]
 
 class PPKConfiguration {
-    
+
     private let _configurationDictionary: [String: Any]
     private let _isImageDocument: Bool
     public let pdfConfiguration: PDFConfiguration
@@ -251,7 +253,7 @@ class PPKConfiguration {
     public var toolbarTitle: String?
     public var pageIndex: UInt = 0
     public var appearanceMode: PDFAppearanceMode = []
-    
+
     init(fromArguments arguments: [String: Any], isImageDocument: Bool = false) {
         _isImageDocument = isImageDocument
         if let cDict = arguments["configuration"] as? [String: Any] {
@@ -287,7 +289,7 @@ class PPKConfiguration {
             return nil
         }
     }
-    
+
     public var leftBarButtonItems: [String]? {
         get {
             if let barButtonItems = _configurationDictionary["leftBarButtonItems"] as? [String] {
@@ -648,9 +650,9 @@ class PPKConfiguration {
                 break
         }
     }
-    
+
     private func _parseSharingConfiguration() {}
-    
+
     private func _parseSettingsOptions(_ optionsStringList: [String], withBuilder builder: PDFConfigurationBuilder) {
         var options: PDFSettingsViewController.Options = []
         for option in optionsStringList {
@@ -677,7 +679,7 @@ class PPKConfiguration {
         }
         builder.settingsOptions = options
     }
-    
+
     private func _parseEditableAnnotationTypes(_ editableAnnotationTypesStringList: [String] ) {
         editableAnnotationTypes.removeAll()
         for key in editableAnnotationTypesStringList {
@@ -686,7 +688,7 @@ class PPKConfiguration {
             }
         }
     }
-    
+
     private func _parseAllowedMenuActions(_ allowedMenuActionsStringList: [String]) {
         allowedMenuActions.removeAll()
         for key in allowedMenuActionsStringList {
@@ -695,7 +697,7 @@ class PPKConfiguration {
             }
         }
     }
-    
+
     private func _parseDocumentInfoOptions() {
         if let documentInfoOptionDict = _configurationDictionary["documentInfoOptions"] as? [String: Any] {
             documentInfoOptions = []
@@ -724,7 +726,7 @@ class PPKConfiguration {
             documentInfoOptions = nil
         }
     }
-    
+
     // MARK: Aux Functions
     private func _uiedgeinsets(fromDict dict: [String: Any]) -> UIEdgeInsets? {
         if let top = dict["top"] as? CGFloat, let bottom = dict["bottom"] as? CGFloat, let right = dict["right"] as? CGFloat, let left = dict["left"] as? CGFloat {
@@ -732,20 +734,20 @@ class PPKConfiguration {
         }
         return nil
     }
-    
+
     private func _cgsize(fromDict dict: [String: Any]) -> CGSize? {
         if let width = dict["width"] as? Double, let height = dict["height"] as? Double {
             return CGSize(width: width, height: height)
         }
         return nil
     }
-    
+
     private func _uicolor(fromDict dict: [String: Any]) -> UIColor? {
         if let red = dict["red"] as? CGFloat, let green = dict["green"] as? CGFloat, let blue = dict["blue"] as? CGFloat, let alpha = dict["alpha"] as? CGFloat {
             return UIColor(cgColor: CGColor(red: red, green: green, blue: blue, alpha: alpha))
         }
         return nil
     }
-    
+
 
 }

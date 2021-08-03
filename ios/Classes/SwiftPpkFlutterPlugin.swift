@@ -1,10 +1,12 @@
-/* *****************************************************************************************************
-   PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
-
-   Copyright (c) 2021 Imdat Solak (imdat@solak.de)
-
-   For license, checkout LICENSE.txt in the root of this repository
-*/
+/*
+ * **********************************************************************
+ * PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
+ *
+ * Copyright (c) 2021 Imdat Solak (imdat@solak.de)
+ *
+ * For license, check out LICENSE.txt in the root of this repository
+ * **********************************************************************
+ */
 
 import Flutter
 import UIKit
@@ -85,7 +87,7 @@ extension SwiftPpkFlutterPlugin: PDFViewControllerDelegate {
     public func pdfViewControllerWillDismiss(_ pdfController: PDFViewController) {
         SwiftPpkFlutterPlugin.channel?.invokeMethod("pdfViewWillDismiss", arguments: nil)
     }
-    
+
     public func pdfViewControllerDidDismiss(_ pdfController: PDFViewController) {
         self.pdfViewController = nil
         SwiftPpkFlutterPlugin.channel?.invokeMethod("pdfViewDidDismiss", arguments: nil)
