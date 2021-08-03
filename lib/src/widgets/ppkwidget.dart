@@ -61,7 +61,7 @@ class PPKWidgetState extends State<PPKWidget> {
         creationParamsCodec: const StandardMessageCodec(),
       );
     } else {
-      return Text("$defaultTargetPlatform is not yet supported by pspdfkit.");
+      return Text("$defaultTargetPlatform is not yet supported by ppk-flutter.");
     }
   }
 }
