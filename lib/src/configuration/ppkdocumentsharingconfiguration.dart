@@ -19,6 +19,20 @@ enum PPKDocumentSharingPagesOption { current, range, all, annotated }
 enum PPKDocumentSharingAnnotationOption { embed, flatten, flattenForPrint, summary, remove }
 enum PPKDocumentSharingDestination { print, export, activity, messages, email, otherApplicaiton }
 
+PPKDocumentSharingConfiguration? documentSharingConfigurationFromJson(Map<String, dynamic>? json) {
+  if (json != null) {
+    return PPKDocumentSharingConfiguration.fromJson(json);
+  }
+  return null;
+}
+
+Map<String, dynamic>? documentSharingConfigurationToJson(PPKDocumentSharingConfiguration? configuration) {
+  if (configuration != null) {
+    return configuration.toJson();
+  }
+  return null;
+}
+
 @JsonSerializable()
 class PPKDocumentSharingConfiguration extends PPKMethodChannelObject {
   factory PPKDocumentSharingConfiguration.defaultConfigurationFoDestination(PPKDocumentSharingDestination dest) {
@@ -29,6 +43,8 @@ class PPKDocumentSharingConfiguration extends PPKMethodChannelObject {
   PPKDocumentSharingPagesOption pageSelectionOptions = PPKDocumentSharingPagesOption.all;
   PPKDocumentSharingAnnotationOption annotationOptions = PPKDocumentSharingAnnotationOption.embed;
   PPKDocumentSharingDestination destination = PPKDocumentSharingDestination.print;
+
+  @JsonKey(fromJson: printConfigurationFromjson, toJson: printConfigurationToJson)
   PPKPrintConfiguration? printConfiguration;
   // TODO: Unsupported features
   // applicationActivities

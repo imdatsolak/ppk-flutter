@@ -105,7 +105,7 @@ enum PPKSignatureCertificateSelectionMode { always, never, ifAvailable }
 enum PPKSignatureBiometricPropertiesOption { none, pressure, timePoints, touchRadius, inputMethod, all }
 
 // Settings Options
-enum PPKSettingsOption { scrollDirection, pageTransition, appearance, brightness, pageMode, spreadFitting, deflt, all }
+enum PPKSettingsOption { theme, appearance, scrollDirection, pageTransition, brightness, pageMode, spreadFitting, deflt, all }
 
 
 // BarButtons
@@ -123,6 +123,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKEdgeInsets? additionalContentInsets = PPKEdgeInsets();
   bool shadowEnabled = false;
   double shadowOpacity = 0.7;
+
+  @JsonKey(fromJson: documentInfoFromJson, toJson: documentInfoToJson)
   PPKDocumentInfoViewConfiguration? documentInfoOptions;
 
   @JsonKey(fromJson: colorFromJson, toJson: colorToJson)
@@ -178,6 +180,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKUserInterfaceViewAnimation userInterfaceViewAnimation = PPKUserInterfaceViewAnimation.fade;
   PPKPresentationHalfModalStyle halfModalStyle = PPKPresentationHalfModalStyle.card;
   PPKAdaptiveConditional documentLabelEnabled = PPKAdaptiveConditional.adaptive;
+  bool pageLabelEnabled = false;
   bool shouldHideUserInterfaceOnPageChange = true;
   bool shouldShowUserInterfaceOnViewWillAppear = true;
   bool shouldAdjustDocumentInsetsByIncludingHomeIndicatorSafeAreaInsets = false;
@@ -240,7 +243,9 @@ class PPKConfiguration extends PPKMethodChannelObject {
   //  signatureStore
 
   // Sharing
+  @JsonKey(fromJson: documentSharingConfigurationFromJson, toJson: documentSharingConfigurationToJson)
   PPKDocumentSharingConfiguration? sharingConfigurations;
+
   PPKDocumentSharingDestination? selectedSharingDestination;
 
   /* **** UNSUPPORTED YET *****
@@ -266,6 +271,9 @@ class PPKConfiguration extends PPKMethodChannelObject {
   String? toolbarTitle;
   List<PPKBarButtonItem>? rightBarButtonItems;
   List<PPKBarButtonItem>? leftBarButtonItems;
+  PPKAppearanceMode appearanceMode = PPKAppearanceMode.deflt;
+
+  List<PPKSettingsOption>? settingsOptions;
 
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
@@ -278,6 +286,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.shadowEnabled = false,
     this.shadowOpacity = 0.7,
     this.backgroundColor,
+    this.documentInfoOptions,
     this.allowedAppearanceModes = PPKAppearanceMode.all,
     this.scrollDirection = PPKScrollDirection.horizontal,
     this.scrollViewInsetAdjustment = PPKScrollInsetAdjustment.fixedElements,
@@ -308,6 +317,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.userInterfaceViewAnimation = PPKUserInterfaceViewAnimation.fade,
     this.halfModalStyle = PPKPresentationHalfModalStyle.card,
     this.documentLabelEnabled = PPKAdaptiveConditional.adaptive,
+    this.pageLabelEnabled = false,
     this.shouldHideUserInterfaceOnPageChange = true,
     this.shouldShowUserInterfaceOnViewWillAppear = true,
     this.shouldAdjustDocumentInsetsByIncludingHomeIndicatorSafeAreaInsets = false,
@@ -356,6 +366,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.toolbarTitle,
     this.rightBarButtonItems,
     this.leftBarButtonItems,
+    this.appearanceMode = PPKAppearanceMode.deflt,
+    this.settingsOptions,
   });
 
   factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);

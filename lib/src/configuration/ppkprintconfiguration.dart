@@ -15,6 +15,20 @@ part "ppkprintconfiguration.g.dart";
 
 enum PPKPrintMode { interactive, choosePrinterOnly, direct }
 
+PPKPrintConfiguration? printConfigurationFromjson(Map<String, dynamic>? json) {
+  if (json != null) {
+    return PPKPrintConfiguration.fromJson(json);
+  }
+  return null;
+}
+
+Map<String, dynamic>? printConfigurationToJson(PPKPrintConfiguration? that) {
+  if (that != null) {
+    return that.toJson();
+  }
+  return null;
+}
+
 @JsonSerializable()
 class PPKPrintConfiguration extends PPKMethodChannelObject {
   PPKPrintMode printMode = PPKPrintMode.interactive;

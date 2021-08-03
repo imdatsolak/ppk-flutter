@@ -33,8 +33,8 @@ let allowedAppearanceModesMap: [String: PDFAppearanceMode] = [
 //        "sepia": PDFAppearanceMode.night,
 //        "night": PDFAppearanceMode.night,
 //        "all": PDFAppearanceMode.all,
-    "deflt": PDFAppearanceMode.all,
-    "sepia": PDFAppearanceMode.night,
+    "deflt": [],
+    "sepia": PDFAppearanceMode.sepia,
     "night": PDFAppearanceMode.night,
     "all": PDFAppearanceMode.all,
 ]
@@ -87,61 +87,59 @@ let bookmarkSortOrderMap: [String: BookmarkManager.SortOrder] = [
 ]
 
 let annotationTypesMap: [String: Annotation.Kind] = [
-    "link": Annotation.Kind.link,
-    "highlight": Annotation.Kind.highlight,
-    "strikeOut": Annotation.Kind.strikeOut,
-    "underline": Annotation.Kind.underline,
-    "squiggly": Annotation.Kind.squiggly,
-    "note": Annotation.Kind.note,
-    "freeText": Annotation.Kind.freeText,
-    "ink": Annotation.Kind.ink,
-    "square": Annotation.Kind.square,
+    "all": Annotation.Kind.all,
+    "caret": Annotation.Kind.caret,
     "circle": Annotation.Kind.circle,
-    "line": Annotation.Kind.line,
-    "polygon": Annotation.Kind.polygon,
-    "polyLine": Annotation.Kind.polyLine,
-    "stamp": Annotation.Kind.stamp,
-    "ink": Annotation.Kind.ink,
-    "sound": Annotation.Kind.sound,
-    "redaction": Annotation.Kind.redaction,
-    "widget": Annotation.Kind.widget,
     "file": Annotation.Kind.file,
+    "freeText": Annotation.Kind.freeText,
+    "highlight": Annotation.Kind.highlight,
+    "ink": Annotation.Kind.ink,
+    "line": Annotation.Kind.line,
+    "link": Annotation.Kind.link,
+    "note": Annotation.Kind.note,
+    "polyLine": Annotation.Kind.polyLine,
+    "polygon": Annotation.Kind.polygon,
+    "popup": Annotation.Kind.popup,
+    "redaction": Annotation.Kind.redaction,
     "richMedia": Annotation.Kind.richMedia,
     "screen": Annotation.Kind.screen,
-    "caret": Annotation.Kind.caret,
-    "popup": Annotation.Kind.popup,
-    "watermark": Annotation.Kind.watermark,
-    "trapNet": Annotation.Kind.trapNet,
+    "sound": Annotation.Kind.sound,
+    "square": Annotation.Kind.square,
+    "squiggly": Annotation.Kind.squiggly,
+    "stamp": Annotation.Kind.stamp,
+    "strikeOut": Annotation.Kind.strikeOut,
     "threeD": Annotation.Kind.threeDimensional,
-    "all": Annotation.Kind.all,
+    "trapNet": Annotation.Kind.trapNet,
+    "underline": Annotation.Kind.underline,
+    "watermark": Annotation.Kind.watermark,
+    "widget": Annotation.Kind.widget
 ]
 
 let annotationToolsMap: [String: Annotation.Tool] = [
-    "link": Annotation.Tool.link,
-    "highlight": Annotation.Tool.highlight,
-    "strikeOut": Annotation.Tool.strikeOut,
-    "underline": Annotation.Tool.underline,
-    "squiggly": Annotation.Tool.squiggly,
-    "note": Annotation.Tool.note,
-    "freeText": Annotation.Tool.freeText,
-    "ink": Annotation.Tool.ink,
-    "square": Annotation.Tool.square,
+    "caret": Annotation.Tool.caret,
     "circle": Annotation.Tool.circle,
-    "line": Annotation.Tool.line,
-    "polygon": Annotation.Tool.polygon,
-    "polyLine": Annotation.Tool.polyLine,
-    "stamp": Annotation.Tool.stamp,
-    "ink": Annotation.Tool.ink,
-    "sound": Annotation.Tool.sound,
-    "redaction": Annotation.Tool.redaction,
-    "widget": Annotation.Tool.widget,
     "file": Annotation.Tool.file,
+    "freeText": Annotation.Tool.freeText,
+    "highlight": Annotation.Tool.highlight,
+    "ink": Annotation.Tool.ink,
+    "line": Annotation.Tool.line,
+    "link": Annotation.Tool.link,
+    "note": Annotation.Tool.note,
+    "polyLine": Annotation.Tool.polyLine,
+    "polygon": Annotation.Tool.polygon,
+    "popup": Annotation.Tool.popup,
+    "redaction": Annotation.Tool.redaction,
     "richMedia": Annotation.Tool.richMedia,
     "screen": Annotation.Tool.screen,
-    "caret": Annotation.Tool.caret,
-    "popup": Annotation.Tool.popup,
-    "watermark": Annotation.Tool.watermark,
+    "sound": Annotation.Tool.sound,
+    "square": Annotation.Tool.square,
+    "squiggly": Annotation.Tool.squiggly,
+    "stamp": Annotation.Tool.stamp,
+    "strikeOut": Annotation.Tool.strikeOut,
     "trapNet": Annotation.Tool.trapNet,
+    "underline": Annotation.Tool.underline,
+    "watermark": Annotation.Tool.watermark,
+    "widget": Annotation.Tool.widget
 ]
 
 let textSelectionMenuActionsMap: [String: TextSelectionMenuAction] = [
@@ -252,7 +250,7 @@ class PPKConfiguration {
     public var documentPassword: String?
     public var toolbarTitle: String?
     public var pageIndex: UInt = 0
-    public var appearanceMode = PDFAppearanceMode.all
+    public var appearanceMode: PDFAppearanceMode = []
     
     init(fromArguments arguments: [String: Any], isImageDocument: Bool = false) {
         _isImageDocument = isImageDocument
@@ -642,12 +640,43 @@ class PPKConfiguration {
                 break
             case "selectedSharingDestination":
                 break
+            case "settingsOptions":
+                if let v = value as? [String] {
+                    _parseSettingsOptions(v, withBuilder: builder)
+                }
             default:
                 break
         }
     }
     
     private func _parseSharingConfiguration() {}
+    
+    private func _parseSettingsOptions(_ optionsStringList: [String], withBuilder builder: PDFConfigurationBuilder) {
+        var options: PDFSettingsViewController.Options = []
+        for option in optionsStringList {
+            switch (option) {
+                case "appearance", "theme":
+                    options.update(with: PDFSettingsViewController.Options.appearance)
+                case "pageTransition":
+                    options.update(with: PDFSettingsViewController.Options.pageTransition)
+                case "scrollDirection":
+                    options.update(with: PDFSettingsViewController.Options.scrollDirection)
+                case "brightness":
+                    options.update(with: PDFSettingsViewController.Options.brightness)
+                case "pageMode":
+                    options.update(with: PDFSettingsViewController.Options.pageMode)
+                case "spreadFitting":
+                    options.update(with: PDFSettingsViewController.Options.spreadFitting)
+                case "deflt":
+                    options = PDFSettingsViewController.Options.default
+                case "all":
+                    options = PDFSettingsViewController.Options.all
+                default:
+                    break
+            }
+        }
+        builder.settingsOptions = options
+    }
     
     private func _parseEditableAnnotationTypes(_ editableAnnotationTypesStringList: [String] ) {
         editableAnnotationTypes.removeAll()

@@ -13,6 +13,17 @@ import "package:ppk_flutter/ppk_flutter.dart";
 
 part "ppkdocumentinfoviewconfiguration.g.dart";
 
+PPKDocumentInfoViewConfiguration? documentInfoFromJson(Map<String, dynamic>? json) {
+  if (json != null) {
+    return PPKDocumentInfoViewConfiguration.fromJson(json);
+  }
+  return null;
+}
+
+Map<String, dynamic>? documentInfoToJson(PPKDocumentInfoViewConfiguration? that) {
+  return that?.toJson() ?? null;
+}
+
 @JsonSerializable()
 class PPKDocumentInfoViewConfiguration extends PPKMethodChannelObject {
   bool outline = true;
