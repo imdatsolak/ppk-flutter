@@ -12,7 +12,7 @@ import Foundation
 import PSPDFKit
 import PSPDFKitUI
 
-class PPKArgumentsConverter {
+class PPKArgumentConverter {
     static func documentPath(fromArguments arguments: [String: Any]) -> String? {
         if let documentPath = arguments["document"] as? String {
             return documentPath
@@ -22,8 +22,8 @@ class PPKArgumentsConverter {
 
     static func configuration(fromArguments arguments: [String: Any]) -> PPKConfiguration {
         var isImageDocument = false
-        if let path = PPKArgumentsConverter.documentPath(fromArguments: arguments) {
-            isImageDocument = PPKArgumentsConverter.isImageDocument(path)
+        if let path = PPKArgumentConverter.documentPath(fromArguments: arguments) {
+            isImageDocument = PPKArgumentConverter.isImageDocument(path)
         }
         return PPKConfiguration(fromArguments: arguments, isImageDocument: isImageDocument)
     }

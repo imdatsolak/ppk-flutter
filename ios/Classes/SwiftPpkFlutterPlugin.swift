@@ -38,7 +38,7 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
             case "pspdfkitVersion":
                 result("iOS \(SDK.versionNumber)")
             case "setLicenseKey":
-                if let arguments = arguments, let licenseKey = PPKArgumentsConverter.licenseKey(fromArguments: arguments) {
+                if let arguments = arguments, let licenseKey = PPKArgumentConverter.licenseKey(fromArguments: arguments) {
                     SDK.setLicenseKey(licenseKey)
                 }
             case "presentGlobal":
@@ -55,8 +55,8 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     private func presentGlobal(_ arguments: [String: Any], result: @escaping FlutterResult) {
-        if let documentPath = PPKArgumentsConverter.documentPath(fromArguments: arguments), documentPath.count > 0, let pdfDocument = PPKHelper.documentFrom(path: documentPath) {
-            let configuration = PPKArgumentsConverter.configuration(fromArguments: arguments)
+        if let documentPath = PPKArgumentConverter.documentPath(fromArguments: arguments), documentPath.count > 0, let pdfDocument = PPKHelper.documentFrom(path: documentPath) {
+            let configuration = PPKArgumentConverter.configuration(fromArguments: arguments)
             if let password = configuration.documentPassword {
                 PPKHelper.unlock(document: pdfDocument, usingPassword: password)
             }

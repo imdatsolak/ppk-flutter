@@ -31,47 +31,49 @@ class PpkActivity: PdfActivity() {
   }
 
   override fun onCreate(bundle: Bundle?) {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkActivityCreated()
     super.onCreate(bundle)
     bindActivity()
   }
 
   override fun onStart() {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkAcitivityStarted()
     super.onStart()
   }
 
   override fun onPause() {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkActivityPaused()
     super.onPause()
   }
   override fun onResume() {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkAcitivityResumed()
     super.onResume()
   }
   override fun onStop() {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkAcitivityStopped()
     super.onStop()
   }
 
   override fun onRestart() {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkAcitivityRestarted()
     super.onRestart()
   }
 
   override fun onDestroy() {
-    // dispatch
+    PpkFlutterNotifier.notifyPpkAcitivityDestroyed()
     super.onDestroy()
     releaseActivity()
   }
 
   override fun onDocumentLoaded(document: PdfDocument) {
+    PpkFlutterNotifier.notifyPpkAcitivityDocumentLoaded()
     super.onDocumentLoaded(document)
     val result: Result? = loadedDocumentResult.getAndSet(null)
     result?.success(true)
-
   }
+
   override fun onDocumentLoadFailed(throwable: Throwable) {
+    PpkFlutterNotifier.notifyPpkAcitivityDocumentLoadFailed()
     super.onDocumentLoadFailed(throwable)
     val result: Result? = loadedDocumentResult.getAndSet(null)
     result?.success(false)

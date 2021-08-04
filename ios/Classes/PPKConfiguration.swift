@@ -258,6 +258,7 @@ class PPKConfiguration {
         _isImageDocument = isImageDocument
         if let cDict = arguments["configuration"] as? [String: Any] {
             _configurationDictionary = cDict
+            documentInfoOptions = nil
             if isImageDocument {
                 pdfConfiguration = PDFConfiguration.image
             } else {
@@ -270,7 +271,6 @@ class PPKConfiguration {
                     }
                 }
             }
-            _parseDocumentInfoOptions()
         } else {
             _configurationDictionary = [:]
             if isImageDocument {
@@ -646,6 +646,10 @@ class PPKConfiguration {
                 if let v = value as? [String] {
                     _parseSettingsOptions(v, withBuilder: builder)
                 }
+            case "documentInfoOptions":
+                if let v = value as? [String: Any] {
+                    _parseDocumentInfoOptions(v)
+                }
             default:
                 break
         }
@@ -698,31 +702,27 @@ class PPKConfiguration {
         }
     }
 
-    private func _parseDocumentInfoOptions() {
-        if let documentInfoOptionDict = _configurationDictionary["documentInfoOptions"] as? [String: Any] {
-            documentInfoOptions = []
-            if let option = documentInfoOptionDict["outline"] as? Bool, option == true {
-                documentInfoOptions?.append(DocumentInfoOption.outline)
-            }
-            if let option = documentInfoOptionDict["annotations"] as? Bool, option == true {
-                documentInfoOptions?.append(DocumentInfoOption.annotations)
-            }
-            if let option = documentInfoOptionDict["embeddedFiles"] as? Bool, option == true {
-                documentInfoOptions?.append(DocumentInfoOption.embeddedFiles)
-            }
-            if let option = documentInfoOptionDict["bookmarks"] as? Bool, option == true {
-                documentInfoOptions?.append(DocumentInfoOption.bookmarks)
-            }
-            if let option = documentInfoOptionDict["documentInfo"] as? Bool, option == true {
-                documentInfoOptions?.append(DocumentInfoOption.documentInfo)
-            }
-            if let option = documentInfoOptionDict["security"] as? Bool, option == true {
-                documentInfoOptions?.append(DocumentInfoOption.security)
-            }
-            if documentInfoOptions?.count == 0 {
-                documentInfoOptions = nil
-            }
-        } else {
+    private func _parseDocumentInfoOptions(_ documentInfoOptionDict: [String: Any]) {
+        documentInfoOptions = []
+        if let option = documentInfoOptionDict["outline"] as? Bool, option == true {
+            documentInfoOptions?.append(DocumentInfoOption.outline)
+        }
+        if let option = documentInfoOptionDict["annotations"] as? Bool, option == true {
+            documentInfoOptions?.append(DocumentInfoOption.annotations)
+        }
+        if let option = documentInfoOptionDict["embeddedFiles"] as? Bool, option == true {
+            documentInfoOptions?.append(DocumentInfoOption.embeddedFiles)
+        }
+        if let option = documentInfoOptionDict["bookmarks"] as? Bool, option == true {
+            documentInfoOptions?.append(DocumentInfoOption.bookmarks)
+        }
+        if let option = documentInfoOptionDict["documentInfo"] as? Bool, option == true {
+            documentInfoOptions?.append(DocumentInfoOption.documentInfo)
+        }
+        if let option = documentInfoOptionDict["security"] as? Bool, option == true {
+            documentInfoOptions?.append(DocumentInfoOption.security)
+        }
+        if documentInfoOptions?.count == 0 {
             documentInfoOptions = nil
         }
     }
