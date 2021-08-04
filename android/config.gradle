@@ -1,0 +1,54 @@
+/*
+ *   Copyright © 2018-2021 PSPDFKit GmbH. All rights reserved.
+ *
+ *   THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY INTERNATIONAL COPYRIGHT LAW
+ *   AND MAY NOT BE RESOLD OR REDISTRIBUTED. USAGE IS BOUND TO THE PSPDFKIT LICENSE AGREEMENT.
+ *   UNAUTHORIZED REPRODUCTION OR DISTRIBUTION IS SUBJECT TO CIVIL AND CRIMINAL PENALTIES.
+ *   This notice may not be removed from this file.
+ */
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.yaml:snakeyaml:1.27"
+    }
+}
+
+import org.yaml.snakeyaml.Yaml
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+ext.flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+ext.pspdfkitMavenUrl = localProperties.getProperty('pspdfkit.mavenUrl')
+if (pspdfkitMavenUrl == null || pspdfkitMavenUrl == '') {
+    ext.pspdfkitMavenUrl = 'https://customers.pspdfkit.com/maven/'
+}
+
+ext.pspdfkitVersion = localProperties.getProperty('pspdfkit.version')
+if (pspdfkitVersion == null || pspdfkitVersion == '') {
+    ext.pspdfkitVersion = '7.0.0'
+}
+
+ext.pspdfkitMavenModuleName = 'pspdfkit'
+
+// Get our library version from the top level pubspec.yaml file.
+def pubspecFilePath = '../pubspec.yaml'
+def pubspecFile = rootProject.file(pubspecFilePath)
+if (!pubspecFile.exists()) {
+    throw new GradleException("'pubspec.yaml' file not found. Expected at the top level of the Flutter repository.")
+}
+def pubspecYaml = new Yaml().load(pubspecFile.newInputStream())
+ext.ppkVersion = pubspecYaml.version
+

@@ -29,7 +29,7 @@ class PPKWidget extends StatefulWidget {
     Key? key,
     required this.documentPath,
     this.configuration,
-    this.onWidgetCreated,
+    this.onProxyCreated,
   }) : super(key: key);
 
   @override

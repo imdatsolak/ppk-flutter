@@ -1,5 +1,6 @@
 package de.solak.ppk_flutter
 
+import android.os.Build
 import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -17,13 +18,13 @@ class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "ppk_flutter")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "de.solak.ppk-flutter.global")
     channel.setMethodCallHandler(this)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    if (call.method == "pspdfkitVersion") {
+      result.success("Android ${Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
     }

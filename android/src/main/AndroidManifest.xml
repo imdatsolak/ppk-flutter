@@ -1,3 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="de.solak.ppk_flutter">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application android:largeHeap="true">
+        <activity
+            android:name=".GlobalActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".GlobalWithWatermarkActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+    </application>
 </manifest>
