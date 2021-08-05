@@ -126,6 +126,9 @@ enum PPKBarButtonItem {
   readerViewButtonItem
 }
 
+// Document Info View
+enum PPKDocumentInfoViewOption { outline, annotations, embeddedFiles, bookmarks, documentInfo, security }
+
 @JsonSerializable()
 class PPKConfiguration extends PPKMethodChannelObject {
   // Appearance Properties
@@ -139,8 +142,14 @@ class PPKConfiguration extends PPKMethodChannelObject {
   bool shadowEnabled = false;
   double shadowOpacity = 0.7;
 
-  @JsonKey(fromJson: documentInfoFromJson, toJson: documentInfoToJson)
-  PPKDocumentInfoViewConfiguration? documentInfoOptions;
+  List<PPKDocumentInfoViewOption>? documentInfoOptions = [
+    PPKDocumentInfoViewOption.outline,
+    PPKDocumentInfoViewOption.annotations,
+    PPKDocumentInfoViewOption.embeddedFiles,
+    PPKDocumentInfoViewOption.bookmarks,
+    PPKDocumentInfoViewOption.documentInfo,
+    PPKDocumentInfoViewOption.security,
+  ];
 
   @JsonKey(fromJson: colorFromJson, toJson: colorToJson)
   Color? backgroundColor;

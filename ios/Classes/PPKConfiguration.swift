@@ -644,10 +644,10 @@ class PPKConfiguration {
                 break
             case "settingsOptions":
                 if let v = value as? [String] {
-                    _parseSettingsOptions(v, withBuilder: builder)
+                    builder.settingsOptions = _parseSettingsOptions(v)
                 }
             case "documentInfoOptions":
-                if let v = value as? [String: Any] {
+                if let v = value as? [String] {
                     _parseDocumentInfoOptions(v)
                 }
             default:
@@ -657,7 +657,7 @@ class PPKConfiguration {
 
     private func _parseSharingConfiguration() {}
 
-    private func _parseSettingsOptions(_ optionsStringList: [String], withBuilder builder: PDFConfigurationBuilder) {
+    private func _parseSettingsOptions(_ optionsStringList: [String]) -> PDFSettingsViewController.Options {
         var options: PDFSettingsViewController.Options = []
         for option in optionsStringList {
             switch (option) {
@@ -681,10 +681,10 @@ class PPKConfiguration {
                     break
             }
         }
-        builder.settingsOptions = options
+        return options
     }
 
-    private func _parseEditableAnnotationTypes(_ editableAnnotationTypesStringList: [String] ) {
+    private func _parseEditableAnnotationTypes(_ editableAnnotationTypesStringList: [String]) {
         editableAnnotationTypes.removeAll()
         for key in editableAnnotationTypesStringList {
             if let value = annotationTypesMap[key] {
@@ -702,25 +702,23 @@ class PPKConfiguration {
         }
     }
 
-    private func _parseDocumentInfoOptions(_ documentInfoOptionDict: [String: Any]) {
+    private func _parseDocumentInfoOptions(_ documentInfoOptionList: [String]) {
         documentInfoOptions = []
-        if let option = documentInfoOptionDict["outline"] as? Bool, option == true {
-            documentInfoOptions?.append(DocumentInfoOption.outline)
-        }
-        if let option = documentInfoOptionDict["annotations"] as? Bool, option == true {
-            documentInfoOptions?.append(DocumentInfoOption.annotations)
-        }
-        if let option = documentInfoOptionDict["embeddedFiles"] as? Bool, option == true {
-            documentInfoOptions?.append(DocumentInfoOption.embeddedFiles)
-        }
-        if let option = documentInfoOptionDict["bookmarks"] as? Bool, option == true {
-            documentInfoOptions?.append(DocumentInfoOption.bookmarks)
-        }
-        if let option = documentInfoOptionDict["documentInfo"] as? Bool, option == true {
-            documentInfoOptions?.append(DocumentInfoOption.documentInfo)
-        }
-        if let option = documentInfoOptionDict["security"] as? Bool, option == true {
-            documentInfoOptions?.append(DocumentInfoOption.security)
+        for option in documentInfoOptionList {
+            switch(option) {
+                case "outline":
+                    documentInfoOptions?.append(DocumentInfoOption.outline)
+                case "annotations":
+                    documentInfoOptions?.append(DocumentInfoOption.annotations)
+                case "embeddedFiles":
+                    documentInfoOptions?.append(DocumentInfoOption.embeddedFiles)
+                case "bookmarks":
+                    documentInfoOptions?.append(DocumentInfoOption.bookmarks)
+                case "documentInfo":
+                    documentInfoOptions?.append(DocumentInfoOption.documentInfo)
+                case "security":
+                    documentInfoOptions?.append(DocumentInfoOption.security)
+            }
         }
         if documentInfoOptions?.count == 0 {
             documentInfoOptions = nil

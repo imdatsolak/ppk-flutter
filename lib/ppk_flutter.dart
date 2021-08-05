@@ -15,7 +15,6 @@ import "dart:async";
 import "package:flutter/services.dart";
 
 export "src/configuration/ppkconfiguration.dart";
-export "src/configuration/ppkdocumentinfoviewconfiguration.dart";
 export "src/configuration/ppkdocumentsharingconfiguration.dart";
 export "src/configuration/ppkprintconfiguration.dart";
 export "src/proxy/ppkproxy.dart";
