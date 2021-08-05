@@ -20,7 +20,7 @@ let pageModeMap: [String: PageMode] = [
 
 let pageTransitionMap: [String: PageTransition] = [
     "scrollContinuous": PageTransition.scrollContinuous,
-    "scrollPerspread": PageTransition.scrollPerSpread,
+    "scrollPerSpread": PageTransition.scrollPerSpread,
     "curl": PageTransition.curl,
 ]
 
@@ -306,7 +306,7 @@ class PPKConfiguration {
                 if let v = value as? String, let ppkValue = allowedAppearanceModesMap[v] {
                     appearanceMode = ppkValue
                 }
-            case "password":
+            case "documentPassword":
                 if let v = value as? String {
                     documentPassword = v
                 }
@@ -326,7 +326,7 @@ class PPKConfiguration {
                 if let v = value as? String, let ppkValue = pageTransitionMap[v] {
                     builder.pageTransition = ppkValue
                 }
-            case "firstPageAlwaysSignle":
+            case "firstPageAlwaysSingle":
                 if let v = value as? Bool {
                     builder.isFirstPageAlwaysSingle = v
                 }
