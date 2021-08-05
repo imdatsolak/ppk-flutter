@@ -26,7 +26,7 @@ object PpkArgumentConverter {
   }
 
   fun isImageDocument(path: String): Boolean {
-    return path.endsWith(".png") || path.endsWith(".jpeg") || path.endsWith((".jpg");
+    return path.endsWith(".png") || path.endsWith(".jpeg") || path.endsWith((".jpg") ;
   }
 
   fun licenseKeyFromArguments(arguments: Map<String, Any>): String? {

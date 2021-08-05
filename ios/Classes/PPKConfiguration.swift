@@ -606,6 +606,10 @@ class PPKConfiguration {
                 if let v = value as? String, let ppkValue = soundAnnotationPlayerStyleMap[v] {
                     builder.soundAnnotationPlayerStyle = ppkValue
                 }
+            case "pageLabelEnabled":
+                if let v = value as? Bool {
+                    builder.isPageLabelEnabled = v
+                }
             case "autosaveEnabled":
                 if let v = value as? Bool {
                     builder.isAutosaveEnabled = v

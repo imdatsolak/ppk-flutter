@@ -105,7 +105,8 @@ enum PPKSignatureCertificateSelectionMode { always, never, ifAvailable }
 enum PPKSignatureBiometricPropertiesOption { none, pressure, timePoints, touchRadius, inputMethod, all }
 
 // Settings Options
-enum PPKSettingsOption { theme, appearance, scrollDirection, pageTransition, brightness, pageMode, spreadFitting, deflt, all }
+enum PPKSettingsOption { theme, appearance, scrollDirection, pageTransition, brightness, pageMode, spreadFitting, deflt,
+  screenAwake, all }
 
 // BarButtons
 enum PPKBarButtonItem {
@@ -129,7 +130,7 @@ enum PPKBarButtonItem {
 // Document Info View
 enum PPKDocumentInfoViewOption { outline, annotations, embeddedFiles, bookmarks, documentInfo, security }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PPKConfiguration extends PPKMethodChannelObject {
   // Appearance Properties
   PPKPageMode pageMode = PPKPageMode.automatic;
@@ -137,11 +138,16 @@ class PPKConfiguration extends PPKMethodChannelObject {
   bool firstPageAlwaysSingle = true;
   PPKSpreadFitting spreadFitting = PPKSpreadFitting.adaptive;
   bool clipToPageBoundaries = true;
+
+  @JsonKey(includeIfNull: false)
   PPKEdgeInsets? additionalScrollViewFrameInsets = PPKEdgeInsets();
+
+  @JsonKey(includeIfNull: false)
   PPKEdgeInsets? additionalContentInsets = PPKEdgeInsets();
   bool shadowEnabled = false;
   double shadowOpacity = 0.7;
 
+  @JsonKey(includeIfNull: false)
   List<PPKDocumentInfoViewOption>? documentInfoOptions = [
     PPKDocumentInfoViewOption.outline,
     PPKDocumentInfoViewOption.annotations,
@@ -151,7 +157,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     PPKDocumentInfoViewOption.security,
   ];
 
-  @JsonKey(fromJson: colorFromJson, toJson: colorToJson)
+  @JsonKey(fromJson: colorFromJson, toJson: colorToJson, includeIfNull: false)
   Color? backgroundColor;
   PPKAppearanceMode allowedAppearanceModes = PPKAppearanceMode.all;
 
@@ -175,6 +181,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
 
   // Page Actions
   PPKLinkAction linkAction = PPKLinkAction.externalBrowser;
+
+  @JsonKey(includeIfNull: false)
   List<PPKTextSelectionMenuAction>? allowedMenuActions = [
     PPKTextSelectionMenuAction.search,
     PPKTextSelectionMenuAction.define,
@@ -189,6 +197,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
   bool imageSelectionEnabled = true;
   PPKTextSelectionMode textSelectionMode = PPKTextSelectionMode.automatic;
   bool textSelectionShouldSnapToWord = false;
+
+  @JsonKey(includeIfNull: false)
   List<PPKAnnotationType>? editableAnnotationTypes = [];
   PPKAnnotationType typesShowingColorPresets = PPKAnnotationType.all;
   // TODO: UNSUPPORTED Item (for now)
@@ -226,9 +236,17 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKScrubberBarType scrubberBarType = PPKScrubberBarType.horizontal;
   bool hideThumbnailBarForSinglePageDocuments = true;
   PPKThumbnailGrouping thumbnailGrouping = PPKThumbnailGrouping.automatic;
+
+  @JsonKey(includeIfNull: false)
   PPKSize? thumbnailSize;
+
+  @JsonKey(includeIfNull: false)
   double? thumbnailInteritemSpacing;
+
+  @JsonKey(includeIfNull: false)
   double? thumbnailLineSpacing;
+
+  @JsonKey(includeIfNull: false)
   PPKEdgeInsets? thumbnailMargin;
 
   // Annotation Settings
@@ -267,9 +285,10 @@ class PPKConfiguration extends PPKMethodChannelObject {
   //  signatureStore
 
   // Sharing
-  @JsonKey(fromJson: documentSharingConfigurationFromJson, toJson: documentSharingConfigurationToJson)
+  @JsonKey(fromJson: documentSharingConfigurationFromJson, toJson: documentSharingConfigurationToJson, includeIfNull: false)
   PPKDocumentSharingConfiguration? sharingConfigurations;
 
+  @JsonKey(includeIfNull: false)
   PPKDocumentSharingDestination? selectedSharingDestination;
 
   /* **** UNSUPPORTED YET *****
@@ -290,14 +309,29 @@ class PPKConfiguration extends PPKMethodChannelObject {
   signatureCreationConfiguration
   */
 
+  @JsonKey(includeIfNull: false)
   String? documentPassword;
   int pageIndex = 0;
+
+  @JsonKey(includeIfNull: false)
   String? toolbarTitle;
+
+  @JsonKey(includeIfNull: false)
   List<PPKBarButtonItem>? rightBarButtonItems;
+
+  @JsonKey(includeIfNull: false)
   List<PPKBarButtonItem>? leftBarButtonItems;
   PPKAppearanceMode appearanceMode = PPKAppearanceMode.deflt;
 
+  @JsonKey(includeIfNull: false)
   List<PPKSettingsOption>? settingsOptions;
+
+  bool formEditingEnabled = true;
+  bool navigationButtonsEnabled = true;
+  bool pageNumberOverlayEnabled = true;
+
+  @JsonKey(includeIfNull: false)
+  double? startZoomScale;
 
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
@@ -392,10 +426,196 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.leftBarButtonItems,
     this.appearanceMode = PPKAppearanceMode.deflt,
     this.settingsOptions,
-  });
+
+    this.formEditingEnabled = true,
+    this.navigationButtonsEnabled = true,
+    this.pageNumberOverlayEnabled = true,
+    this.startZoomScale,
+    // These are mainly for Android and short-cuts
+    bool? copyPasteEnabled,         // same as allowedMenuActions.contains(copy)
+    bool? bookmarkEditingEnabled,   // same as bookmarkIndicatorInteractionEnabled
+    bool? documentInfoViewEnabled,  // same as documentInfoOptions != null && != []
+    PPKAppearanceMode? theme,       // same as appearanceMode
+
+
+    bool? outlineViewEnabled,
+    bool? printEnabled,
+    bool? searchEnabled,
+
+    bool? documentEditingEnabled,
+    bool? documentTitleOverlayEnabled,
+    bool? settingsEnabled,
+    bool? thumbnailBarEnabled,
+  }) {
+    // COPY/PASTE
+    if (copyPasteEnabled != null) {
+     if (copyPasteEnabled) {
+        if (allowedMenuActions == null) {
+          allowedMenuActions = [];
+        }
+        if (allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy) == false) {
+          allowedMenuActions!.add(PPKTextSelectionMenuAction.copy);
+        }
+     } else if (allowedMenuActions != null && allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy)) {
+       allowedMenuActions!.remove(PPKTextSelectionMenuAction.copy);
+     }
+    }
+
+    // BOOKMARK EDITING
+    if (bookmarkEditingEnabled != null) {
+      this.bookmarkIndicatorInteractionEnabled = bookmarkEditingEnabled;
+    }
+
+    // THEME
+    if (theme != null) {
+      this.appearanceMode = theme;
+    }
+
+    // DOCUMENT INFO VIEW
+    if (documentInfoViewEnabled != null) {
+      if (documentInfoViewEnabled) {
+        if (documentInfoOptions != null) {
+          documentInfoOptions = [
+            PPKDocumentInfoViewOption.outline,
+            PPKDocumentInfoViewOption.annotations,
+            PPKDocumentInfoViewOption.embeddedFiles,
+            PPKDocumentInfoViewOption.bookmarks,
+            PPKDocumentInfoViewOption.documentInfo,
+            PPKDocumentInfoViewOption.security,
+          ];
+        }
+      } else {
+        documentInfoOptions = null;
+      }
+    }
+
+      // OUTLINE VIEW
+    if (outlineViewEnabled != null) {
+      if (outlineViewEnabled && (documentInfoViewEnabled == null || !documentInfoViewEnabled)) {
+        if (documentInfoOptions == null) {
+          documentInfoOptions = [
+            PPKDocumentInfoViewOption.outline,
+            PPKDocumentInfoViewOption.annotations,
+            PPKDocumentInfoViewOption.embeddedFiles,
+            PPKDocumentInfoViewOption.bookmarks,
+            PPKDocumentInfoViewOption.documentInfo,
+            PPKDocumentInfoViewOption.security,
+          ];
+        }
+      } else if (documentInfoOptions != null && documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline)) {
+        documentInfoOptions!.remove(PPKDocumentInfoViewOption.outline);
+      }
+    }
+
+    // PRINT VIEW
+    if (printEnabled != null) {
+    }
+
+    // SEARCH
+    if (searchEnabled != null) {
+      if (searchEnabled) {
+        bool printButtonAlradyExists = true;
+        // check if print button exists either in right or left bar button list (iOS)
+        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) &&
+            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) ) {
+          printButtonAlradyExists = false;
+        }
+
+        // if it is not, let's add it to a right bar-button list
+        if (!printButtonAlradyExists) {
+          if (rightBarButtonItems == null) {
+            rightBarButtonItems = [];
+          }
+          rightBarButtonItems!.add(PPKBarButtonItem.printButtonItem);
+        }
+      } else {
+        if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
+          rightBarButtonItems!.remove(PPKBarButtonItem.printButtonItem);
+        }
+        if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
+          leftBarButtonItems!.remove(PPKBarButtonItem.printButtonItem);
+        }
+      }
+    }
+
+    if (documentTitleOverlayEnabled != null) {
+      documentLabelEnabled = documentTitleOverlayEnabled? PPKAdaptiveConditional.yes : PPKAdaptiveConditional.no;
+    }
+
+    // SETTINGS
+    if (settingsEnabled != null) {
+      if (settingsEnabled) {
+        bool settingsButtonAlreadyExists = true;
+        // check if print button exists either in right or left bar button list (iOS)
+        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false) &&
+            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false) ) {
+          settingsButtonAlreadyExists = false;
+        }
+
+        // if it is not, let's add it to a right bar-button list
+        if (!settingsButtonAlreadyExists) {
+          if (leftBarButtonItems == null) {
+            leftBarButtonItems = [];
+          }
+          leftBarButtonItems!.add(PPKBarButtonItem.settingsButtonItem);
+        }
+      } else {
+        if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
+          rightBarButtonItems!.remove(PPKBarButtonItem.settingsButtonItem);
+        }
+        if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
+          leftBarButtonItems!.remove(PPKBarButtonItem.settingsButtonItem);
+        }
+      }
+    }
+  // PPKThumbnailBarMode thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
+    if (thumbnailBarEnabled != null) {
+      if (thumbnailBarEnabled) {
+        if (thumbnailBarMode == PPKThumbnailBarMode.none) {
+          thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
+        }
+      } else {
+        thumbnailBarMode = PPKThumbnailBarMode.none;
+      }
+    }
+  }
 
   factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$PPKConfigurationToJson(this);
+
+  // Because Android needs some settings differently,
+  bool get copyPasteEnabled => (this.allowedMenuActions != null)? this.allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy): false;
+  PPKAppearanceMode get theme => this.appearanceMode;
+  bool get documentInfoViewEnabled => (this.documentInfoOptions != null) ? this.documentInfoOptions!.length > 0 : false;
+  bool get bookmarkEditingEnabled => this.bookmarkIndicatorInteractionEnabled;
+  bool get outlineViewEnabled => (this.documentInfoOptions != null)? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline): false;
+
+  bool get printEnabled => false;
+
+  bool get searchEnabled {
+    if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
+      return true;
+    }
+    if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool get documentEditingEnabled => false;
+  bool get documentTitleOverlayEnabled => documentLabelEnabled != PPKAdaptiveConditional.no;
+
+  bool get settingsEnabled {
+    if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
+      return true;
+    }
+    if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool get thumbnailBarEnabled => thumbnailBarMode != PPKThumbnailBarMode.none;
 }

@@ -28,6 +28,7 @@ import com.pspdfkit.configuration.settings.SettingsMenuItemType
 import com.pspdfkit.configuration.sharing.ShareFeatures
 import com.pspdfkit.configuration.activity.PdfActivityConfiguration.SearchType
 import com.pspdfkit.document.editor.PdfDocumentEditorFactory
+import java.util.*
 
 val pageModeMap: Map<String, PageLayoutMode> = mapOf(
   "automatic" to PageLayoutMode.AUTO,
@@ -238,7 +239,6 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private var configuration: PdfActivityConfiguration? = null
   var documentPassword: String? = null
   var toolbarTitle: String? = null
-  var pageIndex: Int = 0
   var editableAnnotationTypes: MutableList<AnnotationType> =  mutableListOf()
   // .Builder = PdfActivityConfiguration.Builder(context)
 
@@ -338,15 +338,6 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
     }
   }
 
-  private fun parseBookmarkIndicatorInteraction(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val v: Boolean = parseAsBoolean(value, true)
-    if (v) {
-      builder.enableBookmarkEditing()
-    } else {
-      builder.disableBookmarkEditing()
-    }
-  }
-
   private fun parseUserInterfaceViewMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     val m: String? = value as String?
     if (m != null) {
@@ -357,12 +348,40 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
     }
   }
 
-  private fun parseDocumentLabelOverlay(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val v: Boolean = parseAsBoolean(value, true)
-    if (v) {
-      builder.showDocumentTitleOverlay()
-    } else {
-      builder.hideDocumentTitleOverlay()
+  private fun parseSearchMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    val m: String? = value as String?
+    if (m != null) {
+      val v: Int? = searchModeMap[m]
+      if (v != null) {
+        builder.setSearchType(v)
+      }
+    }
+  }
+
+  private fun parseSettingsOptions(value: Any, builder: PdfActivityConfiguration.Builder) {
+    val settingsOptions: MutableCollection<SettingsMenuItemType> = mutableListOf()
+    val optionList: Array<String>? = value as Array<String>?
+    if (optionList != null) {
+      for (option in optionList) {
+        when (option) {
+          "appearance", "theme" -> settingsOptions.add(SettingsMenuItemType.THEME)
+          "pageTransition" -> settingsOptions.add(SettingsMenuItemType.PAGE_TRANSITION)
+          "pageMode" -> settingsOptions.add(SettingsMenuItemType.PAGE_LAYOUT)
+          "scrollDirection" -> settingsOptions.add(SettingsMenuItemType.SCROLL_DIRECTION)
+          "screenAwake" -> settingsOptions.add(SettingsMenuItemType.SCREEN_AWAKE)
+        }
+      }
+      builder.setSettingsMenuItems(EnumSet.copyOf(settingsOptions))
+    }
+  }
+
+  private fun parseThumbnailBarMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    val m: String? = value as String?
+    if (m != null) {
+      val v: ThumbnailBarMode? = thumbnailBarModeMap[m]
+      if (v != null) {
+        builder.setThumbnailBarMode(v)
+      }
     }
   }
 
@@ -371,47 +390,109 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "appearanceMode", "theme" -> parseThemeMode(value, builder)
       "documentPassword" -> documentPassword = parseAsString(value)
       "toolbarTitle" -> toolbarTitle = parseAsString(value)
-      "pageIndex" -> pageIndex = parseAsInt(value, 0)
+      "pageIndex" -> builder.page(parseAsInt(value, 0))
       "pageMode" -> parseLayoutMode(value, builder)
       "pageTransition" -> parsePageScrollMode(value, builder)
       "firstPageAlwaysSingle" -> builder.firstPageAlwaysSingle(parseAsBoolean(value, true))
       "spreadFitting" -> parsePageFitMode(value, builder)
-      "clipToPageBoundaries" -> {			}
-      "additionalScrollViewFrameInsets" -> {			}
-      "additionalContentInsets" -> {			}
-      "shadowEnabled" -> {			}
-      "shadowOpacity" -> {			}
       "backgroundColor" -> builder.backgroundColor(parseAsColor(value, Color.WHITE))
-      "allowedAppearanceModes" -> {			}
       "scrollDirection" -> parseScrollDirection(value, builder)
-      "scrollViewInsetAdjustment" -> {			}
-      "minimumZoomScale" -> {			}
       "maximumZoomScale" -> builder.maxZoomScale(parseAsFloat(value, PdfFragment.MAX_ZOOM))
+      "scrollOnEdgeTapEnabled" -> builder.scrollOnEdgeTapEnabled(parseAsBoolean(value, true))
+      "animateScrollOnEdgeTaps" -> builder.animateScrollOnEdgeTaps(parseAsBoolean(value, false))
+      "scrollOnEdgeTapMargin" -> builder.scrollOnEdgeTapMargin(parseAsInt(value, 24))
+      "textSelectionEnabled" -> builder.textSelectionEnabled(parseAsBoolean(value,true))
+      "editableAnnotationTypes" -> parseEditableAnnotationTypes(value, builder)
+      "bookmarkIndicatorMode" -> parseBookmarkIndicatorMode(value, builder)
+      "allowMultipleBookmarksPerPage" -> builder.allowMultipleBookmarksPerPage(parseAsBoolean(value, false))
+      "userInterfaceViewMode" -> parseUserInterfaceViewMode(value, builder)
+      "thumbnailBarMode" -> parseThumbnailBarMode(value, builder)
+      "autosaveEnabled" -> builder.autosaveEnabled(parseAsBoolean(value, true)),
+      "searchMode" -> parseSearchMode(value, builder)
+      "settingsOptions" -> parseSettingsOptions(value, builder)
+      "copyPasteEnabled" -> when (parseAsBoolean(value, true)) {
+          true -> builder.enableCopyPaste()
+          false -> builder.disableCopyPaste()
+      }
+      "bookmarkIndicatorInteractionEnabled", "bookmarkEditingEnabled" -> when (parseAsBoolean(value, true)) {
+          true -> builder.enableBookmarkEditing()
+          false -> builder.disableBookmarkEditing()
+      }
+      "documentTitleOverlayEnabled" -> when (parseAsBoolean(value, true)) {
+          true -> builder.showDocumentTitleOverlay()
+          false -> builder.hideDocumentTitleOverlay()
+      }
+      "documentInfoViewEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.enableDocumentInfoView()
+        false -> builder.disableDocumentInfoView()
+      }
+      "outlineViewEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.enableOutline()
+        false -> builder.disableOutline()
+      }
+      "printEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.enablePrinting()
+        false -> builder.disablePrinting()
+      }
+      "searchEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.enableSearch()
+        false -> builder.disableSearch()
+      }
+      "documentEditingEnabled" -> when (parseAsBoolean(value, false)) {
+        true -> builder.enableDocumentEditor()
+        false -> builder.disableDocumentEditor()
+      }
+      "formEditingEnabled" -> when (parseAsBoolean(value, false)) {
+        true -> builder.enableFormEditing()
+        false -> builder.disableFormEditing()
+      }
+      "navigationButtonsEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.showNavigationButtons()
+        false -> builder.hideNavigationButtons()
+      }
+      "pageLabelEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.showPageLabels()
+        false -> builder.hidePageLabels()
+      }
+      "pageNumberOverlayEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.showPageNumberOverlay()
+        false -> builder.hidePageNumberOverlay()
+      }
+      "settingsEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.showSettingsMenu()
+        false -> builder.hideSettingsMenu()
+      }
+      "thumbnailBarEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.showThumbnailGrid()
+        false -> builder.hideThumbnailGrid()
+      }
+      "createAnnotationMenuEnabled", "annotationEditingEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.enableAnnotationEditing()
+        false -> builder.disableAnnotationEditing()
+      }
+      "imageSelectionEnabled" -> {			}
+      "textSelectionMode" -> {			}
+      "textSelectionShouldSnapToWord" -> {			}
+      "typesShowingColorPresets" -> {			}
+      "freeTextAccessoryViewEnabled" -> {			}
+      "bookmarkSortOrder" -> {	}
+      "userInterfaceViewAnimation" ->  { }
+      "halfModalStyle" ->  { }
+      "linkAction" -> {			}
+      "allowedMenuActions" -> {			}
       "documentViewLayoutDirectionalLock" -> {			}
       "renderAnimationEnabled" -> {			}
       "renderStatusViewPosition" -> {			}
       "doubleTapAction" -> {			}
       "formElementZoomEnabled" -> {			}
-      "scrollOnEdgeTapEnabled" -> builder.scrollOnEdgeTapEnabled(parseAsBoolean(value, true))
-      "animateScrollOnEdgeTaps" -> builder.animateScrollOnEdgeTaps(parseAsBoolean(value, false))
-      "scrollOnEdgeTapMargin" -> builder.scrollOnEdgeTapMargin(parseAsInt(value, 24))
-      "linkAction" -> {			}
-      "allowedMenuActions" -> {			}
-      "textSelectionEnabled" -> builder.textSelectionEnabled(parseAsBoolean(value,true))
-      "imageSelectionEnabled" -> {			}
-      "textSelectionMode" -> {			}
-      "textSelectionShouldSnapToWord" -> {			}
-      "editableAnnotationTypes" -> parseEditableAnnotationTypes(value, builder)
-      "typesShowingColorPresets" -> {			}
-      "freeTextAccessoryViewEnabled" -> {			}
-      "bookmarkSortOrder" -> {	}
-      "bookmarkIndicatorMode" -> parseBookmarkIndicatorMode(value, builder)
-      "bookmarkIndicatorInteractionEnabled" -> parseBookmarkIndicatorInteraction(value, builder)
-      "allowMultipleBookmarksPerPage" -> builder.allowMultipleBookmarksPerPage(parseAsBoolean(value, false))
-      "userInterfaceViewMode" -> parseUserInterfaceViewMode(value, builder)
-      "userInterfaceViewAnimation" ->  { }
-      "halfModalStyle" ->  { }
-      "documentLabelEnabled" -> parseDocumentLabelOverlay(value, builder)
+      "scrollViewInsetAdjustment" -> {			}
+      "minimumZoomScale" -> {			}
+      "allowedAppearanceModes" -> {			}
+      "clipToPageBoundaries" -> {		}
+      "additionalScrollViewFrameInsets" -> {			}
+      "additionalContentInsets" -> {			}
+      "shadowEnabled" -> {			}
+      "shadowOpacity" -> {			}
       "shouldHideUserInterfaceOnPageChange" -> {	}
       "shouldShowUserInterfaceOnViewWillAppear" -> {	}
       "shouldAdjustDocumentInsetsByIncludingHomeIndicatorSafeAreaInsets" -> {	}
@@ -425,7 +506,6 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "showBackActionButton" -> {	}
       "showForwardActionButton" -> {	}
       "showBackForwardActionButtonLabels" -> {	}
-      "thumbnailBarMode" -> {			}
       "scrubberBarType" -> {			}
       "hideThumbnailBarForSinglePageDocuments" -> {			}
       "thumbnailGrouping" -> {			}
@@ -436,7 +516,6 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "annotationAnimationDuration" -> {			}
       "annotationGroupingEnabled" -> {			}
       "markupAnnotationMergeBehavior" -> {			}
-      "createAnnotationMenuEnabled" -> {			}
       "naturalDrawingAnnotationEnabled" -> {			}
       "magicInkReplacementThreshold" -> {			}
       "drawCreateMode" -> {			}
@@ -444,10 +523,8 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "annotationEntersEditModeAfterSecondTapEnabled" -> {			}
       "shouldScrollToChangedPage" -> {			}
       "soundAnnotationPlayerStyle" -> {			}
-      "autosaveEnabled" -> builder.autosaveEnabled(parseAsBoolean(value, true)),
       "allowBackgroundSaving" -> {			}
       "soundAnnotationTimeLimit" -> {			}
-      "searchMode" -> {			}
       "searchResultZoomScale" -> {			}
       "signatureSavingStrategy" -> {			}
       "signatureCertificateSelectionMode" -> {			}
@@ -455,10 +532,8 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "naturalSignatureDrawingEnabled" -> {			}
       "sharingConfigurations" -> {			}
       "selectedSharingDestination" -> {			}
-      "settingsOptions" -> {			}
       "documentInfoOptions" -> {      }
-      else -> {
-			}
+      else -> { }
     }
   }
 
