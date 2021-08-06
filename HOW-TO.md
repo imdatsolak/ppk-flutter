@@ -37,7 +37,7 @@ You use this functionality via the singleton instance of the `PPKProxy`-Class, e
 
 ``` dart
 
-   PPKProxy.instance.presentGlobal(fullPathToPdfFile);
+   PPKProxy.instance.present(fullPathToPdfFile);
 
 ```
 
@@ -48,11 +48,28 @@ If you want to configure the presentation and what functionality is available, y
 
 ``` dart
 
-   PPKProxy.instance.presentGlobal(fullPathToPdfFile, configuration: PPKConfiguration( ... ));
+   PPKProxy.instance.present(fullPathToPdfFile, configuration: PPKConfiguration( ... ));
 
 ```
 
 Please check `PPKConfiguration` for all the configuration options. They are enormous.
+
+#### 1.1. Global with Watermark (Android only)
+
+Because I need that feature in a project where I use this plugin, I have added a global-mode display where a watermark can be
+shown on top of the PDF. This only works on Android and it is really only a stop-gap solution for Android until I have
+the *Native Widget* version for Android as well as iOS.
+
+If you want to use it, you can do the following:
+
+``` dart
+
+   PPKProxy.instance.presentWithWatermark(fullPAthToPdfFile, watermarkString, configuration: PPKConfiguration( ... ));
+
+```
+
+The `configuration` parameter is not required. The `watermarkString` is multiplied and repeated over the page at an
+angle of 15 degrees counter-clockwise.
 
 ### 2. Native Widget
 
