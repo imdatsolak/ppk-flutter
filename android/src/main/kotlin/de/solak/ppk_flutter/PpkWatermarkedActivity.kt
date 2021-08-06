@@ -7,6 +7,12 @@
  * For license, check out LICENSE.txt in the root of this repository
  * **********************************************************************
  */
+
+// NOTE: This code is originally based on code from PSPDFKit, Copyright PSPDFKit GmbH
+// I have mostly ported it to Kotlin;
+// it is only a stop-gap solution until I have integrated views for Android as well
+// meaning: Flutter Widget on Android
+
 package de.solak.ppk_flutter
 
 import android.content.Context

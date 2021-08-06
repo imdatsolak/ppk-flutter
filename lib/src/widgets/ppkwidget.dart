@@ -6,7 +6,7 @@
  *
  * For license, check out LICENSE.txt in the root of this repository
  * **********************************************************************
- * Based on code from github.com/PSPDFKit/pspdfkit_flutter
+ * Based on some code from github.com/PSPDFKit/pspdfkit_flutter
  */
 
 import "dart:async";

@@ -1,3 +1,13 @@
+/*
+ * **********************************************************************
+ * PPK Flutter - A plugin to provide expanded Interface to PSPDFKit
+ *
+ * Copyright (c) 2021 Imdat Solak (imdat@solak.de)
+ *
+ * For license, check out LICENSE.txt in the root of this repository
+ * **********************************************************************
+ */
+
 package de.solak.ppk_flutter
 
 import android.content.Context
@@ -20,7 +30,6 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import kotlin.reflect.KClass
 
-/** PpkFlutterPlugin */
 class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
