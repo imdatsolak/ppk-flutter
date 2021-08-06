@@ -12,13 +12,13 @@ package de.solak.ppk_flutter
 
 import android.net.Uri
 
-val fileScheme: String = "file://"
+const val fileScheme = "file:///"
 
 object PpkHelper {
 
   fun checkDocumentPathForFileScheme(documentPath: String): String {
     var path = documentPath
-    if (Uri.parse(path).getScheme() == null) {
+    if (Uri.parse(path).scheme == null) {
       if (path.startsWith("/")) {
         path = path.substring(1)
       }

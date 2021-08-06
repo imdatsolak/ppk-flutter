@@ -25,6 +25,7 @@ import androidx.annotation.UiThread
 import com.pspdfkit.document.PdfDocument
 import com.pspdfkit.ui.drawable.PdfDrawable
 import com.pspdfkit.ui.drawable.PdfDrawableProvider
+import kotlin.math.*
 
 var watermarkString: String? = null
 
@@ -70,13 +71,13 @@ class PpkWatermarkedActivity: PpkActivity() {
     private val watermarkPaint = Paint()
     private val pageCoordinates = RectF()
     private val screenCoordinates = RectF()
-    private val text: String = "$text $text"
+    private val watermarkText: String = text.repeat(10)
 
     init {
       watermarkPaint.color = Color.GRAY
       watermarkPaint.style = Paint.Style.FILL
       watermarkPaint.alpha = 80
-      watermarkPaint.textSize = 24f
+      watermarkPaint.textSize = 48f
       calculatePageCoordinates(text, startingPoint)
     }
 
@@ -98,9 +99,9 @@ class PpkWatermarkedActivity: PpkActivity() {
       val bounds = bounds
       canvas.save()
       canvas.rotate(-15f, bounds.left.toFloat(), bounds.bottom.toFloat())
-      setTextSizeForWidth(watermarkPaint, bounds.width().toFloat(), text)
+      setTextSizeForWidth(watermarkPaint, bounds.width().toFloat(), watermarkText)
       for (i in 0..99) {
-        canvas.drawText(text, -250f, (i * 100).toFloat(), watermarkPaint)
+        canvas.drawText(watermarkText, 0f, (i * 100).toFloat(), watermarkPaint)
       }
       canvas.restore()
     }
@@ -111,7 +112,7 @@ class PpkWatermarkedActivity: PpkActivity() {
       paint.textSize = testTextSize
       paint.getTextBounds(text, 0, text.length, bounds)
       val desiredTextSize = testTextSize * desiredWidth / bounds.width()
-      paint.textSize = desiredTextSize
+      paint.textSize = max(desiredTextSize, 48f)
     }
 
     override fun updatePDFToViewTransformation(matrix: Matrix) {

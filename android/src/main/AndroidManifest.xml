@@ -1,15 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="de.solak.ppk_flutter">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+      tools:ignore="ScopedStorage" />
 
     <application android:largeHeap="true">
-        <activity
-            android:name=".GlobalActivity"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".GlobalWithWatermarkActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+      <activity
+        android:name=".PpkActivity"
+        android:windowSoftInputMode="adjustNothing" />
+      <activity
+        android:name=".PpkWatermarkedActivity"
+        android:windowSoftInputMode="adjustNothing" />
     </application>
 </manifest>

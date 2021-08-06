@@ -10,6 +10,7 @@ import com.pspdfkit.PSPDFKit
 import com.pspdfkit.configuration.activity.PdfActivityConfiguration
 import com.pspdfkit.ui.PdfActivity
 import com.pspdfkit.ui.PdfActivityIntentBuilder
+import io.flutter.embedding.android.FlutterActivity
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -21,41 +22,22 @@ import kotlin.reflect.KClass
 
 /** PpkFlutterPlugin */
 class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  var channel : MethodChannel? = null
-  lateinit var context : Context
-
-  companion object {
-    fun registerWith(registrar: Registrar) {
-      val instance = PpkFlutterPlugin()
-      val channel = MethodChannel(registrar.messenger(), "de.solak.ppk-flutter.global")
-      instance.context = registrar.activeContext()
-      instance.channel = channel
-      channel.setMethodCallHandler(instance)
-      PpkFlutterNotifier.setChannel(channel)
-    }
-  }
+  private lateinit var channel : MethodChannel
+  private lateinit var context : Context
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-//    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "de.solak.ppk-flutter.global")
-//    channel.setMethodCallHandler(this)
-//    context = flutterPluginBinding.applicationContext
-//    PpkFlutterNotifier.setChannel(channel)
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "de.solak.ppk-flutter.global")
+    channel.setMethodCallHandler(this)
+    context = flutterPluginBinding.applicationContext
+    PpkFlutterNotifier.setChannel(channel)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     var arguments: Map<String, Any>? = null
 
-    if (call.arguments != null) {
-      try {
-        @Suppress("UNCHECKED_CAST")
-        arguments = call.arguments as Map<String, Any>
-      } catch (e: Error) {
-
-      }
+    if (call.arguments is Map<*, *>) {
+      @Suppress("UNCHECKED_CAST")
+      arguments = call.arguments as Map<String, Any>
     }
 
     when (call.method) {
@@ -87,7 +69,7 @@ class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel?.setMethodCallHandler(null)
+    channel.setMethodCallHandler(null)
     PpkFlutterNotifier.setChannel(null)
   }
 
@@ -113,6 +95,7 @@ class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
             .activityClass(PpkWatermarkedActivity::class.java)
             .configuration(configuration)
             .build()
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
           context.startActivity(intent)
         } else {
           val intent: Intent = PdfActivityIntentBuilder.fromUri(context, Uri.parse(documentPath))
@@ -120,6 +103,7 @@ class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
             .configuration(configuration)
             .passwords(ppkConfig.documentPassword)
             .build()
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
           context.startActivity(intent)
         }
       } else {
@@ -128,6 +112,7 @@ class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
             .activityClass(PpkActivity::class.java)
             .configuration(configuration)
             .build()
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
           context.startActivity(intent)
         } else {
           val intent: Intent = PdfActivityIntentBuilder.fromUri(context, Uri.parse(documentPath))
@@ -135,6 +120,7 @@ class PpkFlutterPlugin: FlutterPlugin, MethodCallHandler {
             .configuration(configuration)
             .passwords(ppkConfig.documentPassword)
             .build()
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
           context.startActivity(intent)
         }
       }

@@ -16,18 +16,18 @@ import "package:flutter/services.dart";
 import "package:ppk_flutter/ppk_flutter.dart";
 
 class PPKProxy {
-  VoidCallback? pdfActivityOnCreate;
-  VoidCallback? pdfActivityOnStart;
-  VoidCallback? pdfActivityOnPause;
-  VoidCallback? pdfActivityOnResume;
-  VoidCallback? pdfActivityOnStop;
-  VoidCallback? pdfActivityOnRestart;
-  VoidCallback? pdfActivityOnDestroy;
-  VoidCallback? pdfViewControllerWillDisplay;
-  VoidCallback? pdfViewControllerWillDismiss;
-  VoidCallback? pdfViewControllerDidDismiss;
-  VoidCallback? pdfActivityOnDocumentLoaded;
-  VoidCallback? pdfActivityOnDocumentLoadFailed;
+  VoidCallback? ppkActivityCreated;
+  VoidCallback? ppkActivityStarted;
+  VoidCallback? ppkActivityPaused;
+  VoidCallback? ppkActivityResumed;
+  VoidCallback? ppkActivityStopped;
+  VoidCallback? ppkActivityRestarted;
+  VoidCallback? ppkActivityDestroyed;
+  VoidCallback? ppkViewControllerWillDisplay;
+  VoidCallback? ppkViewControllerWillDismiss;
+  VoidCallback? ppkViewControllerDidDismiss;
+  VoidCallback? ppkActivityDocumentLoaded;
+  VoidCallback? ppkActivityDocumentLoadFailed;
 
   late MethodChannel _channel;
 
@@ -70,7 +70,7 @@ class PPKProxy {
       "presentWithWatermark",
       <String, dynamic>{
         "document": document,
-        "watermarkString": watermarkString,
+        "watermark": watermarkString,
         "configuration": configuration.methodChannelRepresentation(),
       },
     );
@@ -80,40 +80,40 @@ class PPKProxy {
     VoidCallback? _callToMake;
     switch (call.method) {
       // Android related Callbacks
-      case "pdfActivityCreated":
-        _callToMake = pdfActivityOnCreate;
+      case "ppkActivityCreated":
+        _callToMake = ppkActivityCreated;
         break;
-      case "pdfActivityStarted":
-        _callToMake = pdfActivityOnStart;
+      case "ppkActivityStarted":
+        _callToMake = ppkActivityStarted;
         break;
-      case "pdfActivityPause":
-        _callToMake = pdfActivityOnPause;
+      case "ppkActivityPaused":
+        _callToMake = ppkActivityPaused;
         break;
-      case "pdfActivityResumed":
-        _callToMake = pdfActivityOnResume;
+      case "ppkActivityResumed":
+        _callToMake = ppkActivityResumed;
         break;
-      case "pdfActivityStopped":
-        _callToMake = pdfActivityOnStop;
+      case "ppkActivityStopped":
+        _callToMake = ppkActivityStopped;
         break;
-      case "pdfActivityRestarted":
-        _callToMake = pdfActivityOnRestart;
+      case "ppkActivityRestarted":
+        _callToMake = ppkActivityRestarted;
         break;
-      case "pdfActivityDestroyed":
-        _callToMake = pdfActivityOnDestroy;
+      case "ppkActivityDestroyed":
+        _callToMake = ppkActivityDestroyed;
         break;
       // iOS Related Callbacks
       case "pdfViewControllerWillDismiss":
-        _callToMake = pdfViewControllerWillDismiss;
+        _callToMake = ppkViewControllerWillDismiss;
         break;
       case "pdfViewControllerDidDismiss":
-        _callToMake = pdfViewControllerDidDismiss;
+        _callToMake = ppkViewControllerDidDismiss;
         break;
       // Document related Callbacks
-      case "pdfActivityDocumentLoaded":
-        _callToMake = pdfActivityOnDocumentLoaded;
+      case "ppkActivityDocumentLoaded":
+        _callToMake = ppkActivityDocumentLoaded;
         break;
-      case "pdfActivityDocumentLoadFailed":
-        _callToMake = pdfActivityOnDocumentLoadFailed;
+      case "ppkActivityDocumentLoadFailed":
+        _callToMake = ppkActivityDocumentLoadFailed;
         break;
       default:
         print("Unknowm method ${call.method} ");
