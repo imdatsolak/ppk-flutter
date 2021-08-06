@@ -26,26 +26,25 @@ import com.pspdfkit.ui.PdfFragment
 
 import com.pspdfkit.configuration.settings.SettingsMenuItemType
 import com.pspdfkit.configuration.sharing.ShareFeatures
-import com.pspdfkit.configuration.activity.PdfActivityConfiguration.SearchType
-import com.pspdfkit.document.editor.PdfDocumentEditorFactory
 import java.util.*
+import kotlin.collections.ArrayList
 
 val pageModeMap: Map<String, PageLayoutMode> = mapOf(
   "automatic" to PageLayoutMode.AUTO,
   "single" to PageLayoutMode.SINGLE,
-  "double" to PageLayoutMode.DOUBLE,
+  "double" to PageLayoutMode.DOUBLE
 )
 
 val pageTransitionMap: Map<String, PageScrollMode> = mapOf(
   "scrollContinuous" to PageScrollMode.CONTINUOUS,
   "scrollPerSpread" to PageScrollMode.PER_PAGE,
-  "curl" to PageScrollMode.PER_PAGE,
+  "curl" to PageScrollMode.PER_PAGE
 )
 
 val spreadFittingMap: Map<String, PageFitMode> = mapOf(
   "fit" to PageFitMode.FIT_TO_SCREEN,
   "fill" to PageFitMode.FIT_TO_WIDTH,
-  "adaptive" to PageFitMode.FIT_TO_WIDTH,
+  "adaptive" to PageFitMode.FIT_TO_WIDTH
 )
 
 val allowedAppearanceModesMap: Map<String, ThemeMode> = mapOf(
@@ -56,18 +55,18 @@ val allowedAppearanceModesMap: Map<String, ThemeMode> = mapOf(
   "deflt" to ThemeMode.DEFAULT,
   "sepia" to ThemeMode.DEFAULT,
   "night" to ThemeMode.NIGHT,
-  "all" to ThemeMode.DEFAULT,
+  "all" to ThemeMode.DEFAULT
 )
 
 val scrollDirectionMap: Map<String, PageScrollDirection> = mapOf(
   "horizontal" to PageScrollDirection.HORIZONTAL,
-  "vertical" to PageScrollDirection.VERTICAL,
+  "vertical" to PageScrollDirection.VERTICAL
 )
 
 val scrollViewInsetAdjustmentMap: Map<String, String> = mapOf(
   "none" to "ScrollInsetAdjustment.none",
   "fixedElements" to "ScrollInsetAdjustment.fixedElements",
-  "allElements" to "ScrollInsetAdjustment.allElements",
+  "allElements" to "ScrollInsetAdjustment.allElements"
 )
 
 val documentViewLayoutDirectionalLockMap: Map<String, Boolean> = mapOf(
@@ -78,13 +77,13 @@ val documentViewLayoutDirectionalLockMap: Map<String, Boolean> = mapOf(
 
 val renderStatusViewPositionMap: Map<String, String> = mapOf(
   "top" to "RenderStatusViewPosition.top",
-  "centered" to "RenderStatusViewPosition.centered",
+  "centered" to "RenderStatusViewPosition.centered"
 )
 
 val doubleTapActionMap: Map<String, String> = mapOf(
   "none" to "TapAction.none",
   "zoom" to "TapAction.zoom",
-  "smartZoom" to "TapAction.smartZoom",
+  "smartZoom" to "TapAction.smartZoom"
 )
 
 val linkActionMap: Map<String, String> = mapOf(
@@ -92,18 +91,18 @@ val linkActionMap: Map<String, String> = mapOf(
   "alertView" to "LinkAction.alertView",
   "externalBrowser" to "LinkAction.openSafari",
   "inlineBrowser" to "LinkAction.inlineBrowser",
-  "inlineWebViewController" to "LinkAction.inlineWebViewController",
+  "inlineWebViewController" to "LinkAction.inlineWebViewController"
 )
 
 val textSelectionModeMap: Map<String, String> = mapOf(
   "regular" to "TextSelectionMode.regular",
   "simple" to "TextSelectionMode.simple",
-  "automatic" to "TextSelectionMode.automatic",
+  "automatic" to "TextSelectionMode.automatic"
 )
 
 val bookmarkSortOrderMap: Map<String, String> = mapOf(
   "custom" to "BookmarkManager.SortOrder.custom",
-  "pageBased" to "BookmarkManager.SortOrder.pageBased",
+  "pageBased" to "BookmarkManager.SortOrder.pageBased"
 )
 
 val annotationTypesMap: Map<String, AnnotationType> = mapOf(
@@ -149,72 +148,72 @@ val textSelectionMenuActionsMap: Map<String, String> = mapOf(
   "redact" to "TextSelectionMenuAction.redact",
   "createLink" to "TextSelectionMenuAction.createLink",
   "annotationCreation" to "TextSelectionMenuAction.annotationCreation",
-  "all" to "TextSelectionMenuAction.all",
+  "all" to "TextSelectionMenuAction.all"
 )
 
 val bookmarkIndicatorModeMap: Map<String, Boolean> = mapOf(
   "off" to false,
   "alwaysOn" to true,
-  "onWhenBookmarked" to true,
+  "onWhenBookmarked" to true
 )
 
 val userInterfaceViewModeMap: Map<String, UserInterfaceViewMode> = mapOf(
   "always" to UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_VISIBLE,
   "automatic" to UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_AUTOMATIC,
   "automaticNoFirstLastPage" to UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_AUTOMATIC_BORDER_PAGES,
-  "never" to UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_HIDDEN,
+  "never" to UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_HIDDEN
 )
 
 val userInterfaceViewAnimationMap: Map<String, String> = mapOf(
   "none" to "UserInterfaceViewAnimation.none",
   "fade" to "UserInterfaceViewAnimation.fade",
-  "slide" to "UserInterfaceViewAnimation.slide",
+  "slide" to "UserInterfaceViewAnimation.slide"
 )
 
 val halfModalStyleMap: Map<String, String> = mapOf(
   "card" to "PresentationHalfModalStyle.card",
-  "system" to "PresentationHalfModalStyle.system",
+  "system" to "PresentationHalfModalStyle.system"
 )
 
 val documentLabelEnabledMap: Map<String, Boolean> = mapOf(
   "yes" to true,
   "no" to false,
-  "adaptive" to true,
+  "adaptive" to true
 )
 
 val thumbnailBarModeMap: Map<String, ThumbnailBarMode> = mapOf(
   "none" to ThumbnailBarMode.THUMBNAIL_BAR_MODE_NONE,
   "scrubberBar" to ThumbnailBarMode.THUMBNAIL_BAR_MODE_PINNED,
   "scrollable" to ThumbnailBarMode.THUMBNAIL_BAR_MODE_SCROLLABLE,
-  "floatingScrubberBar" to ThumbnailBarMode.THUMBNAIL_BAR_MODE_FLOATING,
+  "floatingScrubberBar" to ThumbnailBarMode.THUMBNAIL_BAR_MODE_FLOATING
 )
 
 val scrubberBarTypeMap: Map<String, String> = mapOf(
   "horizontal" to "ScrubberBarType.horizontal",
   "verticalLeft" to "ScrubberBarType.verticalLeft",
-  "verticalRight" to "ScrubberBarType.verticalRight",
+  "verticalRight" to "ScrubberBarType.verticalRight"
 )
 
 val thumbnailGroupingMap: Map<String, String> = mapOf(
   "automatic" to "ThumbnailGrouping.automatic",
   "never" to "ThumbnailGrouping.never",
-  "always" to "ThumbnailGrouping.always",
+  "always" to "ThumbnailGrouping.always"
 )
 
 val markupAnnotationMergeBehaviorMap: Map<String, String> = mapOf(
   "never" to "MarkupAnnotationMergeBehavior.never",
-  "ifColorMatches" to "MarkupAnnotationMergeBehavior.ifColorMatches",
+  "ifColorMatches" to "MarkupAnnotationMergeBehavior.ifColorMatches"
 )
 
 val drawCreateModeMap: Map<String, String> = mapOf(
   "separate" to "DrawCreateMode.separate",
   "mergeIfPossible" to "DrawCreateMode.mergeIfPossible",
-  "automatic" to "DrawCreateMode.automatic",
+  "automatic" to "DrawCreateMode.automatic"
 )
 
 val soundAnnotationPlayerStyleMap: Map<String, String> = mapOf(
   "inline" to "SoundAnnotationPlayerStyle.inline",
-  "bottom" to "SoundAnnotationPlayerStyle.bottom",
+  "bottom" to "SoundAnnotationPlayerStyle.bottom"
 )
 
 val searchModeMap: Map<String, Int> = mapOf(
@@ -225,164 +224,34 @@ val searchModeMap: Map<String, Int> = mapOf(
 val signatureSavingStrategyMap: Map<String, String> = mapOf(
   "alwaysSave" to "SignatureSavingStrategy.alwaysSave",
   "neverSave" to "SignatureSavingStrategy.neverSave",
-  "saveIfSelected" to "SignatureSavingStrategy.saveIfSelected",
+  "saveIfSelected" to "SignatureSavingStrategy.saveIfSelected"
 )
 
 val signatureCertificateSelectionModeMap: Map<String, String> = mapOf(
   "always" to "SignatureCertificateSelectionMode.always",
   "never" to "SignatureCertificateSelectionMode.never",
-  "ifAvailable" to "SignatureCertificateSelectionMode.ifAvailable",
+  "ifAvailable" to "SignatureCertificateSelectionMode.ifAvailable"
 )
 
 class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
-  private var configurationDictionary: Map<String, Any>
-  private var configuration: PdfActivityConfiguration? = null
+  var configuration: PdfActivityConfiguration? = null
   var documentPassword: String? = null
   var toolbarTitle: String? = null
-  var editableAnnotationTypes: MutableList<AnnotationType> =  mutableListOf()
-  // .Builder = PdfActivityConfiguration.Builder(context)
 
   init {
-    editableAnnotationTypes.addAll(annotationTypesMap.values)
+    val builder = PdfActivityConfiguration.Builder(context)
+
     if (arguments["configuration"] != null) {
-      configurationDictionary = arguments["configuration"] as Map<String, Any>
-      val builder = PdfActivityConfiguration.Builder(context)
+      val configurationDictionary: Map<String, Any> = arguments["configuration"] as Map<String, Any>
+
       for (key in configurationDictionary.keys) {
         val value: Any? = configurationDictionary[key]
         if (value != null) {
           parse(key, value, builder)
         }
       }
-    } else {
-      configurationDictionary = []
-      configuration = PdfActivityConfiguration.Builder(context).build()
     }
-  }
-
-  private fun parseLayoutMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    val v: PageLayoutMode?
-    if (m != null) {
-      v = pageModeMap[m]
-      if (v != null) {
-        builder.layoutMode(v)
-      }
-    }
-  }
-
-  private fun parsePageScrollMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    val v: PageScrollMode?
-    if (m != null) {
-      v = pageTransitionMap[m]
-      if (v != null) {
-        builder.scrollMode(v)
-      }
-    }
-  }
-
-  private fun parsePageFitMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    val v: PageFitMode?
-    if (m != null) {
-      v = spreadFittingMap[m]
-      if (v != null) {
-        builder.fitMode(v)
-      }
-    }
-  }
-
-  private fun parseScrollDirection(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    val v: PageScrollDirection?
-    if (m != null) {
-      v = scrollDirectionMap[m]
-      if (v != null) {
-        builder.scrollDirection(v)
-      }
-    }
-  }
-
-  private fun parseEditableAnnotationTypes(value: Any, builder: PdfActivityConfiguration.Builder) {
-    editableAnnotationTypes.clear()
-    val m: Array<String>? = value as Array<String>?
-    if (m != null) {
-      var v: AnnotationType?
-      for (k in m) {
-        v = annotationTypesMap[k]
-        if (v != null) {
-          editableAnnotationTypes.add(v)
-        }
-      }
-    }
-    builder.editableAnnotationTypes(editableAnnotationTypes)
-    if (editableAnnotationTypes.size == 0) {
-      builder.disableAnnotationEditing()
-    } else {
-      builder.enableAnnotationEditing()
-    }
-  }
-
-  private fun parseBookmarkIndicatorMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    val v: Boolean?
-    if (m != null) {
-      v = bookmarkIndicatorModeMap[m]
-      if (v != null) {
-        if (v) {
-          builder.enableBookmarkList()
-        } else {
-          builder.disableBookmarkList()
-        }
-      }
-    }
-  }
-
-  private fun parseUserInterfaceViewMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    if (m != null) {
-      val v: UserInterfaceViewMode? = userInterfaceViewModeMap[m]
-      if (v != null) {
-        builder.setUserInterfaceViewMode(v)
-      }
-    }
-  }
-
-  private fun parseSearchMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    if (m != null) {
-      val v: Int? = searchModeMap[m]
-      if (v != null) {
-        builder.setSearchType(v)
-      }
-    }
-  }
-
-  private fun parseSettingsOptions(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val settingsOptions: MutableCollection<SettingsMenuItemType> = mutableListOf()
-    val optionList: Array<String>? = value as Array<String>?
-    if (optionList != null) {
-      for (option in optionList) {
-        when (option) {
-          "appearance", "theme" -> settingsOptions.add(SettingsMenuItemType.THEME)
-          "pageTransition" -> settingsOptions.add(SettingsMenuItemType.PAGE_TRANSITION)
-          "pageMode" -> settingsOptions.add(SettingsMenuItemType.PAGE_LAYOUT)
-          "scrollDirection" -> settingsOptions.add(SettingsMenuItemType.SCROLL_DIRECTION)
-          "screenAwake" -> settingsOptions.add(SettingsMenuItemType.SCREEN_AWAKE)
-        }
-      }
-      builder.setSettingsMenuItems(EnumSet.copyOf(settingsOptions))
-    }
-  }
-
-  private fun parseThumbnailBarMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val m: String? = value as String?
-    if (m != null) {
-      val v: ThumbnailBarMode? = thumbnailBarModeMap[m]
-      if (v != null) {
-        builder.setThumbnailBarMode(v)
-      }
-    }
+    configuration = builder.build()
   }
 
   private fun parse(key: String, value: Any, builder: PdfActivityConfiguration.Builder) {
@@ -407,7 +276,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "allowMultipleBookmarksPerPage" -> builder.allowMultipleBookmarksPerPage(parseAsBoolean(value, false))
       "userInterfaceViewMode" -> parseUserInterfaceViewMode(value, builder)
       "thumbnailBarMode" -> parseThumbnailBarMode(value, builder)
-      "autosaveEnabled" -> builder.autosaveEnabled(parseAsBoolean(value, true)),
+      "autosaveEnabled" -> builder.autosaveEnabled(parseAsBoolean(value, true))
       "searchMode" -> parseSearchMode(value, builder)
       "settingsOptions" -> parseSettingsOptions(value, builder)
       "copyPasteEnabled" -> when (parseAsBoolean(value, true)) {
@@ -538,42 +407,164 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   }
 
   private fun parseThemeMode(value: Any, builder: PdfActivityConfiguration.Builder) {
-    val key: String?
-    var v: ThemeMode? = null
-    try {
-      key = value as String?
-      v = allowedAppearanceModesMap[key]
-    } catch (e: Error) {
+    if (value is String) {
+      val v: ThemeMode? = allowedAppearanceModesMap[value]
 
-    }
-    if (v != null) {
-      builder.themeMode(v)
+      if (v != null) {
+        builder.themeMode(v)
+      }
     }
   }
 
+  private fun parseLayoutMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: PageLayoutMode? = pageModeMap[value]
+      if (v != null) {
+        builder.layoutMode(v)
+      }
+    }
+  }
+
+  private fun parsePageScrollMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: PageScrollMode? = pageTransitionMap[value]
+      if (v != null) {
+        builder.scrollMode(v)
+      }
+    }
+  }
+
+  private fun parsePageFitMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: PageFitMode? = spreadFittingMap[value]
+      if (v != null) {
+        builder.fitMode(v)
+      }
+    }
+  }
+
+  private fun parseScrollDirection(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: PageScrollDirection? = scrollDirectionMap[value]
+      if (v != null) {
+        builder.scrollDirection(v)
+      }
+    }
+  }
+
+  private fun parseEditableAnnotationTypes(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is ArrayList<*>) {
+      val editableAnnotationTypes: MutableList<AnnotationType> = mutableListOf()
+      var v: AnnotationType?
+
+      for (k in value) {
+        v = annotationTypesMap[k]
+        if (v != null) {
+          editableAnnotationTypes.add(v)
+        }
+      }
+      builder.editableAnnotationTypes(editableAnnotationTypes)
+      if (editableAnnotationTypes.size == 0) {
+        builder.disableAnnotationEditing()
+      } else {
+        builder.enableAnnotationEditing()
+      }
+    }
+  }
+
+  private fun parseBookmarkIndicatorMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: Boolean? = bookmarkIndicatorModeMap[value]
+      if (v != null) {
+        if (v) {
+          builder.enableBookmarkList()
+        } else {
+          builder.disableBookmarkList()
+        }
+      }
+    }
+  }
+
+  private fun parseUserInterfaceViewMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: UserInterfaceViewMode? = userInterfaceViewModeMap[value]
+      if (v != null) {
+        builder.setUserInterfaceViewMode(v)
+      }
+    }
+  }
+
+  private fun parseSearchMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: Int? = searchModeMap[value]
+      if (v != null) {
+        builder.setSearchType(v)
+      }
+    }
+  }
+
+  private fun parseSettingsOptions(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is ArrayList<*>) {
+    val settingsOptions: MutableCollection<SettingsMenuItemType> = mutableListOf()
+
+      for (option in value) {
+        when (option) {
+          "appearance", "theme" -> settingsOptions.add(SettingsMenuItemType.THEME)
+          "pageTransition" -> settingsOptions.add(SettingsMenuItemType.PAGE_TRANSITION)
+          "pageMode" -> settingsOptions.add(SettingsMenuItemType.PAGE_LAYOUT)
+          "scrollDirection" -> settingsOptions.add(SettingsMenuItemType.SCROLL_DIRECTION)
+          "screenAwake" -> settingsOptions.add(SettingsMenuItemType.SCREEN_AWAKE)
+        }
+      }
+      builder.setSettingsMenuItems(EnumSet.copyOf(settingsOptions))
+    }
+  }
+
+  private fun parseThumbnailBarMode(value: Any, builder: PdfActivityConfiguration.Builder) {
+    if (value is String) {
+      val v: ThumbnailBarMode? = thumbnailBarModeMap[value]
+      if (v != null) {
+        builder.setThumbnailBarMode(v)
+      }
+    }
+  }
+
+  // MARK: Auxiliary Functions
 
   private fun parseAsString(value: Any): String? {
     return value as String?
   }
 
+  private fun parseAsDouble(value: Any, default: Double): Double {
+    val d: Double? = value as Double?
+
+    if (d != null) {
+      return d
+    }
+    return default
+  }
+
   private fun parseAsInt(value: Any, default: Int): Int {
-    val i: Int? = value as Int?
-    if (i != null) {
-      return i
+    if (value is Int) {
+      return value
+    } else if (value is Double) {
+      return parseAsDouble(value, default.toDouble()).toInt()
     }
     return default
   }
 
   private fun parseAsFloat(value: Any, default: Float): Float {
-    val f: Float? = value as Float?
-    if (f != null) {
-      return f
+    if (value is Float) {
+      return value
+    } else if (value is Double) {
+      return parseAsDouble(value, default.toDouble()).toFloat()
     }
     return default
   }
 
   private fun parseAsBoolean(value: Any, default: Boolean): Boolean {
       val b: Boolean? = value as Boolean?
+
       if (b != null) {
         return b
       }
@@ -581,7 +572,9 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
     }
 
   private fun parseAsColor(value: Any, default: Int): Int {
+    @Suppress("UNCHECKED_CAST")
     val v: Map<String, Int>? = value as Map<String, Int>?
+
     if (v != null) {
       val r: Int? = v["red"]
       val g: Int? = v["green"]

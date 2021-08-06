@@ -14,6 +14,7 @@ import android.os.Bundle
 
 import com.pspdfkit.document.PdfDocument
 import com.pspdfkit.ui.PdfActivity
+import io.flutter.embedding.android.FlutterActivity
 
 import java.util.concurrent.atomic.AtomicReference
 
@@ -22,9 +23,9 @@ import io.flutter.plugin.common.MethodChannel.Result
 var currentActivity: PpkActivity? = null
 var loadedDocumentResult: AtomicReference<Result?> = AtomicReference()
 
-class PpkActivity: PdfActivity() {
+open class PpkActivity: PdfActivity() {
 
-  companion object Static {
+  companion object {
     fun setLoadedDocumentResult(result: Result) {
       loadedDocumentResult.set(result)
     }

@@ -49,12 +49,12 @@ class PPKProxy {
     );
   }
 
-  Future<bool?> presentGlobal(String document, {PPKConfiguration? configuration}) async {
+  Future<bool?> present(String document, {PPKConfiguration? configuration}) async {
     if (configuration == null) {
       configuration = PPKConfiguration();
     }
     return await _channel.invokeMethod(
-      "presentGlobal",
+      "present",
       <String, dynamic>{
         "document": document,
         "configuration": configuration.methodChannelRepresentation(),
@@ -62,12 +62,12 @@ class PPKProxy {
     );
   }
 
-  Future<bool?> presentGlobalWithWatermark(String document, String watermarkString, {PPKConfiguration? configuration}) async {
+  Future<bool?> presentWithWatermark(String document, String watermarkString, {PPKConfiguration? configuration}) async {
     if (configuration == null) {
       configuration = PPKConfiguration();
     }
     return await _channel.invokeMethod(
-      "presentGlobalWithWatermark",
+      "presentWithWatermark",
       <String, dynamic>{
         "document": document,
         "watermarkString": watermarkString,

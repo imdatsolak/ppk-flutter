@@ -177,7 +177,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
   bool formElementZoomEnabled = false;
   bool scrollOnEdgeTapEnabled = true;
   bool animateScrollOnEdgeTaps = false;
-  double scrollOnEdgeTapMargin = 44;
+  int scrollOnEdgeTapMargin = 44;
 
   // Page Actions
   PPKLinkAction linkAction = PPKLinkAction.externalBrowser;
@@ -241,10 +241,10 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKSize? thumbnailSize;
 
   @JsonKey(includeIfNull: false)
-  double? thumbnailInteritemSpacing;
+  int? thumbnailInteritemSpacing;
 
   @JsonKey(includeIfNull: false)
-  double? thumbnailLineSpacing;
+  int? thumbnailLineSpacing;
 
   @JsonKey(includeIfNull: false)
   PPKEdgeInsets? thumbnailMargin;

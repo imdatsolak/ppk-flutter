@@ -41,11 +41,11 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
                 if let arguments = arguments, let licenseKey = PPKArgumentConverter.licenseKey(fromArguments: arguments) {
                     SDK.setLicenseKey(licenseKey)
                 }
-            case "presentGlobal":
+            case "present":
                 if let arguments = arguments {
                     self.presentGlobal(arguments, result: result)
                 }
-            case "presentGlobalWithWatermark":
+            case "presentWithWatermark":
                 if let arguments = arguments {
                     self.presentGlobal(arguments, result: result)
                 }
