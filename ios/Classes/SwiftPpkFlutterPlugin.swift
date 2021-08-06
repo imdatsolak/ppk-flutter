@@ -85,11 +85,11 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
 
 extension SwiftPpkFlutterPlugin: PDFViewControllerDelegate {
     public func pdfViewControllerWillDismiss(_ pdfController: PDFViewController) {
-        SwiftPpkFlutterPlugin.channel?.invokeMethod("pdfViewWillDismiss", arguments: nil)
+        SwiftPpkFlutterPlugin.channel?.invokeMethod("ppkViewWillDismiss", arguments: nil)
     }
 
     public func pdfViewControllerDidDismiss(_ pdfController: PDFViewController) {
         self.pdfViewController = nil
-        SwiftPpkFlutterPlugin.channel?.invokeMethod("pdfViewDidDismiss", arguments: nil)
+        SwiftPpkFlutterPlugin.channel?.invokeMethod("ppkViewDidDismiss", arguments: nil)
     }
 }
