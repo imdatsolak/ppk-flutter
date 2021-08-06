@@ -105,8 +105,18 @@ enum PPKSignatureCertificateSelectionMode { always, never, ifAvailable }
 enum PPKSignatureBiometricPropertiesOption { none, pressure, timePoints, touchRadius, inputMethod, all }
 
 // Settings Options
-enum PPKSettingsOption { theme, appearance, scrollDirection, pageTransition, brightness, pageMode, spreadFitting, deflt,
-  screenAwake, all }
+enum PPKSettingsOption {
+  theme,
+  appearance,
+  scrollDirection,
+  pageTransition,
+  brightness,
+  pageMode,
+  spreadFitting,
+  deflt,
+  screenAwake,
+  all
+}
 
 // BarButtons
 enum PPKBarButtonItem {
@@ -426,22 +436,19 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.leftBarButtonItems,
     this.appearanceMode = PPKAppearanceMode.deflt,
     this.settingsOptions,
-
     this.formEditingEnabled = true,
     this.navigationButtonsEnabled = true,
     this.pageNumberOverlayEnabled = true,
     this.startZoomScale,
     // These are mainly for Android and short-cuts
-    bool? copyPasteEnabled,         // same as allowedMenuActions.contains(copy)
-    bool? bookmarkEditingEnabled,   // same as bookmarkIndicatorInteractionEnabled
-    bool? documentInfoViewEnabled,  // same as documentInfoOptions != null && != []
-    PPKAppearanceMode? theme,       // same as appearanceMode
-
+    bool? copyPasteEnabled, // same as allowedMenuActions.contains(copy)
+    bool? bookmarkEditingEnabled, // same as bookmarkIndicatorInteractionEnabled
+    bool? documentInfoViewEnabled, // same as documentInfoOptions != null && != []
+    PPKAppearanceMode? theme, // same as appearanceMode
 
     bool? outlineViewEnabled,
     bool? printEnabled,
     bool? searchEnabled,
-
     bool? documentEditingEnabled,
     bool? documentTitleOverlayEnabled,
     bool? settingsEnabled,
@@ -449,16 +456,16 @@ class PPKConfiguration extends PPKMethodChannelObject {
   }) {
     // COPY/PASTE
     if (copyPasteEnabled != null) {
-     if (copyPasteEnabled) {
+      if (copyPasteEnabled) {
         if (allowedMenuActions == null) {
           allowedMenuActions = [];
         }
         if (allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy) == false) {
           allowedMenuActions!.add(PPKTextSelectionMenuAction.copy);
         }
-     } else if (allowedMenuActions != null && allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy)) {
-       allowedMenuActions!.remove(PPKTextSelectionMenuAction.copy);
-     }
+      } else if (allowedMenuActions != null && allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy)) {
+        allowedMenuActions!.remove(PPKTextSelectionMenuAction.copy);
+      }
     }
 
     // BOOKMARK EDITING
@@ -489,7 +496,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
       }
     }
 
-      // OUTLINE VIEW
+    // OUTLINE VIEW
     if (outlineViewEnabled != null) {
       if (outlineViewEnabled && (documentInfoViewEnabled == null || !documentInfoViewEnabled)) {
         if (documentInfoOptions == null) {
@@ -508,8 +515,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     }
 
     // PRINT VIEW
-    if (printEnabled != null) {
-    }
+    if (printEnabled != null) {}
 
     // SEARCH
     if (searchEnabled != null) {
@@ -517,7 +523,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
         bool printButtonAlradyExists = true;
         // check if print button exists either in right or left bar button list (iOS)
         if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) &&
-            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) ) {
+            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false)) {
           printButtonAlradyExists = false;
         }
 
@@ -539,7 +545,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     }
 
     if (documentTitleOverlayEnabled != null) {
-      documentLabelEnabled = documentTitleOverlayEnabled? PPKAdaptiveConditional.yes : PPKAdaptiveConditional.no;
+      documentLabelEnabled = documentTitleOverlayEnabled ? PPKAdaptiveConditional.yes : PPKAdaptiveConditional.no;
     }
 
     // SETTINGS
@@ -548,7 +554,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
         bool settingsButtonAlreadyExists = true;
         // check if print button exists either in right or left bar button list (iOS)
         if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false) &&
-            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false) ) {
+            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false)) {
           settingsButtonAlreadyExists = false;
         }
 
@@ -568,7 +574,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
         }
       }
     }
-  // PPKThumbnailBarMode thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
+    // PPKThumbnailBarMode thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
     if (thumbnailBarEnabled != null) {
       if (thumbnailBarEnabled) {
         if (thumbnailBarMode == PPKThumbnailBarMode.none) {
@@ -586,11 +592,13 @@ class PPKConfiguration extends PPKMethodChannelObject {
   Map<String, dynamic> toJson() => _$PPKConfigurationToJson(this);
 
   // Because Android needs some settings differently,
-  bool get copyPasteEnabled => (this.allowedMenuActions != null)? this.allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy): false;
+  bool get copyPasteEnabled =>
+      (this.allowedMenuActions != null) ? this.allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy) : false;
   PPKAppearanceMode get theme => this.appearanceMode;
   bool get documentInfoViewEnabled => (this.documentInfoOptions != null) ? this.documentInfoOptions!.length > 0 : false;
   bool get bookmarkEditingEnabled => this.bookmarkIndicatorInteractionEnabled;
-  bool get outlineViewEnabled => (this.documentInfoOptions != null)? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline): false;
+  bool get outlineViewEnabled =>
+      (this.documentInfoOptions != null) ? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline) : false;
 
   bool get printEnabled => false;
 
