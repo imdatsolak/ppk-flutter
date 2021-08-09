@@ -343,6 +343,12 @@ class PPKConfiguration extends PPKMethodChannelObject {
   @JsonKey(includeIfNull: false)
   double? startZoomScale;
 
+  @JsonKey(includeIfNull: false)
+  bool? printEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? shareEnabled;
+
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
     this.pageTransition = PPKPageTransition.scrollPerSpread,
@@ -440,6 +446,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.navigationButtonsEnabled = true,
     this.pageNumberOverlayEnabled = true,
     this.startZoomScale,
+    this.printEnabled,
+    this.shareEnabled,
     // These are mainly for Android and short-cuts
     bool? copyPasteEnabled, // same as allowedMenuActions.contains(copy)
     bool? bookmarkEditingEnabled, // same as bookmarkIndicatorInteractionEnabled
@@ -447,7 +455,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
     PPKAppearanceMode? theme, // same as appearanceMode
 
     bool? outlineViewEnabled,
-    bool? printEnabled,
     bool? searchEnabled,
     bool? documentEditingEnabled,
     bool? documentTitleOverlayEnabled,
@@ -513,9 +520,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
         documentInfoOptions!.remove(PPKDocumentInfoViewOption.outline);
       }
     }
-
-    // PRINT VIEW
-    if (printEnabled != null) {}
 
     // SEARCH
     if (searchEnabled != null) {
@@ -599,8 +603,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
   bool get bookmarkEditingEnabled => this.bookmarkIndicatorInteractionEnabled;
   bool get outlineViewEnabled =>
       (this.documentInfoOptions != null) ? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline) : false;
-
-  bool get printEnabled => false;
 
   bool get searchEnabled {
     if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {

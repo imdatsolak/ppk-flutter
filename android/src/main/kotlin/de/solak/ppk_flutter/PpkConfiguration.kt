@@ -303,6 +303,10 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         true -> builder.enablePrinting()
         false -> builder.disablePrinting()
       }
+      "shareEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.setEnabledShareFeatures(ShareFeatures.all())
+        false -> builder.setEnabledShareFeatures(ShareFeatures.none())
+      }
       "searchEnabled" -> when (parseAsBoolean(value, true)) {
         true -> builder.enableSearch()
         false -> builder.disableSearch()
