@@ -722,6 +722,8 @@ class PPKConfiguration {
                     documentInfoOptions?.append(DocumentInfoOption.documentInfo)
                 case "security":
                     documentInfoOptions?.append(DocumentInfoOption.security)
+                default:
+                    break
             }
         }
         if documentInfoOptions?.count == 0 {
