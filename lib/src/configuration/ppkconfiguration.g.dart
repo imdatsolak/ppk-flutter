@@ -181,8 +181,6 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     navigationButtonsEnabled: json['navigationButtonsEnabled'] as bool,
     pageNumberOverlayEnabled: json['pageNumberOverlayEnabled'] as bool,
     startZoomScale: (json['startZoomScale'] as num?)?.toDouble(),
-    printEnabled: json['printEnabled'] as bool?,
-    shareEnabled: json['shareEnabled'] as bool?,
     copyPasteEnabled: json['copyPasteEnabled'] as bool?,
     bookmarkEditingEnabled: json['bookmarkEditingEnabled'] as bool?,
     documentInfoViewEnabled: json['documentInfoViewEnabled'] as bool?,
@@ -193,6 +191,8 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     documentTitleOverlayEnabled: json['documentTitleOverlayEnabled'] as bool?,
     settingsEnabled: json['settingsEnabled'] as bool?,
     thumbnailBarEnabled: json['thumbnailBarEnabled'] as bool?,
+    printingEnabled: json['printingEnabled'] as bool?,
+    sharingEnabled: json['sharingEnabled'] as bool?,
   );
 }
 
@@ -368,8 +368,6 @@ Map<String, dynamic> _$PPKConfigurationToJson(PPKConfiguration instance) {
   val['navigationButtonsEnabled'] = instance.navigationButtonsEnabled;
   val['pageNumberOverlayEnabled'] = instance.pageNumberOverlayEnabled;
   writeNotNull('startZoomScale', instance.startZoomScale);
-  writeNotNull('printEnabled', instance.printEnabled);
-  writeNotNull('shareEnabled', instance.shareEnabled);
   val['copyPasteEnabled'] = instance.copyPasteEnabled;
   val['theme'] = _$PPKAppearanceModeEnumMap[instance.theme];
   val['documentInfoViewEnabled'] = instance.documentInfoViewEnabled;
@@ -380,6 +378,8 @@ Map<String, dynamic> _$PPKConfigurationToJson(PPKConfiguration instance) {
   val['documentTitleOverlayEnabled'] = instance.documentTitleOverlayEnabled;
   val['settingsEnabled'] = instance.settingsEnabled;
   val['thumbnailBarEnabled'] = instance.thumbnailBarEnabled;
+  val['sharingEnabled'] = instance.sharingEnabled;
+  val['printingEnabled'] = instance.printingEnabled;
   return val;
 }
 

@@ -343,12 +343,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
   @JsonKey(includeIfNull: false)
   double? startZoomScale;
 
-  @JsonKey(includeIfNull: false)
-  bool? printEnabled;
-
-  @JsonKey(includeIfNull: false)
-  bool? shareEnabled;
-
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
     this.pageTransition = PPKPageTransition.scrollPerSpread,
@@ -446,8 +440,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.navigationButtonsEnabled = true,
     this.pageNumberOverlayEnabled = true,
     this.startZoomScale,
-    this.printEnabled,
-    this.shareEnabled,
     // These are mainly for Android and short-cuts
     bool? copyPasteEnabled, // same as allowedMenuActions.contains(copy)
     bool? bookmarkEditingEnabled, // same as bookmarkIndicatorInteractionEnabled
@@ -460,6 +452,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
     bool? documentTitleOverlayEnabled,
     bool? settingsEnabled,
     bool? thumbnailBarEnabled,
+    bool? printingEnabled,
+    bool? sharingEnabled,
   }) {
     // COPY/PASTE
     if (copyPasteEnabled != null) {
@@ -470,8 +464,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
         if (allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy) == false) {
           allowedMenuActions!.add(PPKTextSelectionMenuAction.copy);
         }
-      } else if (allowedMenuActions != null && allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy)) {
-        allowedMenuActions!.remove(PPKTextSelectionMenuAction.copy);
+      } else {
+        allowedMenuActions?.remove(PPKTextSelectionMenuAction.copy);
       }
     }
 
@@ -516,35 +510,30 @@ class PPKConfiguration extends PPKMethodChannelObject {
             PPKDocumentInfoViewOption.security,
           ];
         }
-      } else if (documentInfoOptions != null && documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline)) {
-        documentInfoOptions!.remove(PPKDocumentInfoViewOption.outline);
+      } else {
+        documentInfoOptions?.remove(PPKDocumentInfoViewOption.outline);
       }
     }
 
     // SEARCH
     if (searchEnabled != null) {
       if (searchEnabled) {
-        bool printButtonAlradyExists = true;
-        // check if print button exists either in right or left bar button list (iOS)
-        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) &&
-            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false)) {
-          printButtonAlradyExists = false;
+        bool searchButtonAlreadyExists = true;
+        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.searchButtonItem) == false) &&
+            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.searchButtonItem) == false)) {
+          searchButtonAlreadyExists = false;
         }
 
         // if it is not, let's add it to a right bar-button list
-        if (!printButtonAlradyExists) {
+        if (!searchButtonAlreadyExists) {
           if (rightBarButtonItems == null) {
             rightBarButtonItems = [];
           }
-          rightBarButtonItems!.add(PPKBarButtonItem.printButtonItem);
+          rightBarButtonItems!.add(PPKBarButtonItem.searchButtonItem);
         }
       } else {
-        if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
-          rightBarButtonItems!.remove(PPKBarButtonItem.printButtonItem);
-        }
-        if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
-          leftBarButtonItems!.remove(PPKBarButtonItem.printButtonItem);
-        }
+        rightBarButtonItems?.remove(PPKBarButtonItem.searchButtonItem);
+        leftBarButtonItems?.remove(PPKBarButtonItem.searchButtonItem);
       }
     }
 
@@ -556,7 +545,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
     if (settingsEnabled != null) {
       if (settingsEnabled) {
         bool settingsButtonAlreadyExists = true;
-        // check if print button exists either in right or left bar button list (iOS)
         if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false) &&
             (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false)) {
           settingsButtonAlreadyExists = false;
@@ -570,12 +558,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
           leftBarButtonItems!.add(PPKBarButtonItem.settingsButtonItem);
         }
       } else {
-        if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
-          rightBarButtonItems!.remove(PPKBarButtonItem.settingsButtonItem);
-        }
-        if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
-          leftBarButtonItems!.remove(PPKBarButtonItem.settingsButtonItem);
-        }
+          rightBarButtonItems?.remove(PPKBarButtonItem.settingsButtonItem);
+          leftBarButtonItems?.remove(PPKBarButtonItem.settingsButtonItem);
       }
     }
     // PPKThumbnailBarMode thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
@@ -586,6 +570,56 @@ class PPKConfiguration extends PPKMethodChannelObject {
         }
       } else {
         thumbnailBarMode = PPKThumbnailBarMode.none;
+      }
+    }
+
+    // PRINT
+    if (printingEnabled != null) {
+      if (printingEnabled) {
+        bool printButtonAlreadyExists = true;
+        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) &&
+            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false)) {
+          printButtonAlreadyExists = false;
+        }
+
+        // if it is not, let's add it to a right bar-button list
+        if (!printButtonAlreadyExists) {
+          if (rightBarButtonItems == null) {
+            rightBarButtonItems = [];
+          }
+          rightBarButtonItems!.add(PPKBarButtonItem.printButtonItem);
+        }
+      } else {
+        rightBarButtonItems?.remove(PPKBarButtonItem.printButtonItem);
+        leftBarButtonItems?.remove(PPKBarButtonItem.printButtonItem);
+      }
+    }
+
+    // SHARING
+    if (sharingEnabled != null) {
+      if (sharingEnabled) {
+        bool shareButtonAlreadyExists = true;
+        if ((rightBarButtonItems == null || (rightBarButtonItems!.contains(PPKBarButtonItem.openInButtonItem) == false && rightBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) == false)) &&
+            (leftBarButtonItems == null || (leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false && leftBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) == false))) {
+          shareButtonAlreadyExists = false;
+        }
+
+        // if it is not, let's add it to a right bar-button list
+        if (!shareButtonAlreadyExists) {
+          if (rightBarButtonItems == null) {
+            rightBarButtonItems = [];
+          }
+          rightBarButtonItems!.add(PPKBarButtonItem.openInButtonItem);
+        }
+      } else {
+        rightBarButtonItems?.remove(PPKBarButtonItem.openInButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.activityButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.emailButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.messageButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.openInButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.activityButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.emailButtonItem);
+        rightBarButtonItems?.remove(PPKBarButtonItem.messageButtonItem);
       }
     }
   }
@@ -628,4 +662,31 @@ class PPKConfiguration extends PPKMethodChannelObject {
   }
 
   bool get thumbnailBarEnabled => thumbnailBarMode != PPKThumbnailBarMode.none;
+
+  bool get sharingEnabled {
+    if (rightBarButtonItems != null) {
+      return rightBarButtonItems!.contains(PPKBarButtonItem.openInButtonItem) ||
+          rightBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) ||
+          rightBarButtonItems!.contains(PPKBarButtonItem.emailButtonItem) ||
+          rightBarButtonItems!.contains(PPKBarButtonItem.messageButtonItem);
+    }
+    if (leftBarButtonItems != null) {
+      return leftBarButtonItems!.contains(PPKBarButtonItem.openInButtonItem) ||
+          leftBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) ||
+          leftBarButtonItems!.contains(PPKBarButtonItem.emailButtonItem) ||
+          leftBarButtonItems!.contains(PPKBarButtonItem.messageButtonItem);
+    }
+    return false;
+  }
+
+  bool get printingEnabled {
+    if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
+      return true;
+    }
+    if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
+      return true;
+    }
+    return false;
+  }
+
 }
