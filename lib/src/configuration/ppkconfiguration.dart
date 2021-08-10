@@ -454,6 +454,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     bool? thumbnailBarEnabled,
     bool? printingEnabled,
     bool? sharingEnabled,
+    bool? annotationListEnabled,
   }) {
     // COPY/PASTE
     if (copyPasteEnabled != null) {
@@ -504,6 +505,8 @@ class PPKConfiguration extends PPKMethodChannelObject {
           documentInfoOptions = [
             PPKDocumentInfoViewOption.outline,
           ];
+        } else {
+          documentInfoOptions!.add(PPKDocumentInfoViewOption.outline);
         }
       } else {
         documentInfoOptions?.remove(PPKDocumentInfoViewOption.outline);
@@ -617,6 +620,22 @@ class PPKConfiguration extends PPKMethodChannelObject {
         rightBarButtonItems?.remove(PPKBarButtonItem.messageButtonItem);
       }
     }
+
+    // Annotation List VIEW
+    if (annotationListEnabled != null) {
+      if (annotationListEnabled && (documentInfoViewEnabled == null || !documentInfoViewEnabled)) {
+        if (documentInfoOptions == null) {
+          documentInfoOptions = [
+            PPKDocumentInfoViewOption.annotations,
+          ];
+        } else {
+          documentInfoOptions!.add(PPKDocumentInfoViewOption.annotations);
+        }
+      } else {
+        documentInfoOptions?.remove(PPKDocumentInfoViewOption.annotations);
+      }
+    }
+
   }
 
   factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);
@@ -684,4 +703,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
     return false;
   }
 
+  bool get annotationListEnabled =>
+      (this.documentInfoOptions != null) ? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.annotations) : false;
 }

@@ -296,6 +296,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         false -> builder.disableDocumentInfoView()
       }
       "outlineViewEnabled" -> when (parseAsBoolean(value, true)) {
+
         true -> builder.enableOutline()
         false -> builder.disableOutline()
       }
@@ -342,6 +343,10 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "createAnnotationMenuEnabled", "annotationEditingEnabled" -> when (parseAsBoolean(value, true)) {
         true -> builder.enableAnnotationEditing()
         false -> builder.disableAnnotationEditing()
+      }
+      "annotationsListEnabled" -> when (parseAsBoolean(value, true)) {
+        true -> builder.enableAnntationList()
+        false -> builder.disableAnnotationlist()
       }
       "imageSelectionEnabled" -> {			}
       "textSelectionMode" -> {			}
