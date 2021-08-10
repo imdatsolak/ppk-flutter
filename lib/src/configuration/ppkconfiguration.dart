@@ -343,6 +343,42 @@ class PPKConfiguration extends PPKMethodChannelObject {
   @JsonKey(includeIfNull: false)
   double? startZoomScale;
 
+  @JsonKey(includeIfNull: false)
+  bool? copyPasteEnabled; // same as allowedMenuActions.contains(copy)
+
+  @JsonKey(includeIfNull: false)
+  bool? bookmarkEditingEnabled; // same as bookmarkIndicatorInteractionEnabled
+
+  @JsonKey(includeIfNull: false)
+  bool? documentInfoViewEnabled; // same as documentInfoOptions != null && != []
+
+  @JsonKey(includeIfNull: false)
+  bool? outlineViewEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? searchEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? documentEditingEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? documentTitleOverlayEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? settingsEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? thumbnailBarEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? printingEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? sharingEnabled;
+
+  @JsonKey(includeIfNull: false)
+  bool? annotationListEnabled;
+
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
     this.pageTransition = PPKPageTransition.scrollPerSpread,
@@ -440,202 +476,26 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.navigationButtonsEnabled = true,
     this.pageNumberOverlayEnabled = true,
     this.startZoomScale,
+    this.copyPasteEnabled, // same as allowedMenuActions.contains(copy)
+    this.bookmarkEditingEnabled, // same as bookmarkIndicatorInteractionEnabled
+    this.documentInfoViewEnabled, // same as documentInfoOptions != null && != []
+    this.outlineViewEnabled,
+    this.searchEnabled,
+    this.documentEditingEnabled,
+    this.documentTitleOverlayEnabled,
+    this.settingsEnabled,
+    this.thumbnailBarEnabled,
+    this.printingEnabled,
+    this.sharingEnabled,
+    this.annotationListEnabled,
+
     // These are mainly for Android and short-cuts
-    bool? copyPasteEnabled, // same as allowedMenuActions.contains(copy)
-    bool? bookmarkEditingEnabled, // same as bookmarkIndicatorInteractionEnabled
-    bool? documentInfoViewEnabled, // same as documentInfoOptions != null && != []
     PPKAppearanceMode? theme, // same as appearanceMode
-
-    bool? outlineViewEnabled,
-    bool? searchEnabled,
-    bool? documentEditingEnabled,
-    bool? documentTitleOverlayEnabled,
-    bool? settingsEnabled,
-    bool? thumbnailBarEnabled,
-    bool? printingEnabled,
-    bool? sharingEnabled,
-    bool? annotationListEnabled,
   }) {
-    // COPY/PASTE
-    if (copyPasteEnabled != null) {
-      if (copyPasteEnabled) {
-        if (allowedMenuActions == null) {
-          allowedMenuActions = [];
-        }
-        if (allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy) == false) {
-          allowedMenuActions!.add(PPKTextSelectionMenuAction.copy);
-        }
-      } else {
-        allowedMenuActions?.remove(PPKTextSelectionMenuAction.copy);
-      }
-    }
-
-    // BOOKMARK EDITING
-    if (bookmarkEditingEnabled != null) {
-      this.bookmarkIndicatorInteractionEnabled = bookmarkEditingEnabled;
-    }
-
     // THEME
     if (theme != null) {
       this.appearanceMode = theme;
     }
-
-    // DOCUMENT INFO VIEW
-    if (documentInfoViewEnabled != null) {
-      if (documentInfoViewEnabled) {
-        if (documentInfoOptions != null) {
-          documentInfoOptions = [
-            PPKDocumentInfoViewOption.outline,
-            PPKDocumentInfoViewOption.annotations,
-            PPKDocumentInfoViewOption.embeddedFiles,
-            PPKDocumentInfoViewOption.bookmarks,
-            PPKDocumentInfoViewOption.documentInfo,
-            PPKDocumentInfoViewOption.security,
-          ];
-        }
-      } else {
-        documentInfoOptions = null;
-      }
-    }
-
-    // OUTLINE VIEW
-    if (outlineViewEnabled != null) {
-      if (outlineViewEnabled && (documentInfoViewEnabled == null || !documentInfoViewEnabled)) {
-        if (documentInfoOptions == null) {
-          documentInfoOptions = [
-            PPKDocumentInfoViewOption.outline,
-          ];
-        } else {
-          documentInfoOptions!.add(PPKDocumentInfoViewOption.outline);
-        }
-      } else {
-        documentInfoOptions?.remove(PPKDocumentInfoViewOption.outline);
-      }
-    }
-
-    // SEARCH
-    if (searchEnabled != null) {
-      if (searchEnabled) {
-        bool searchButtonAlreadyExists = true;
-        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.searchButtonItem) == false) &&
-            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.searchButtonItem) == false)) {
-          searchButtonAlreadyExists = false;
-        }
-
-        // if it is not, let's add it to a right bar-button list
-        if (!searchButtonAlreadyExists) {
-          if (rightBarButtonItems == null) {
-            rightBarButtonItems = [];
-          }
-          rightBarButtonItems!.add(PPKBarButtonItem.searchButtonItem);
-        }
-      } else {
-        rightBarButtonItems?.remove(PPKBarButtonItem.searchButtonItem);
-        leftBarButtonItems?.remove(PPKBarButtonItem.searchButtonItem);
-      }
-    }
-
-    if (documentTitleOverlayEnabled != null) {
-      documentLabelEnabled = documentTitleOverlayEnabled ? PPKAdaptiveConditional.yes : PPKAdaptiveConditional.no;
-    }
-
-    // SETTINGS
-    if (settingsEnabled != null) {
-      if (settingsEnabled) {
-        bool settingsButtonAlreadyExists = true;
-        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false) &&
-            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem) == false)) {
-          settingsButtonAlreadyExists = false;
-        }
-
-        // if it is not, let's add it to a right bar-button list
-        if (!settingsButtonAlreadyExists) {
-          if (leftBarButtonItems == null) {
-            leftBarButtonItems = [];
-          }
-          leftBarButtonItems!.add(PPKBarButtonItem.settingsButtonItem);
-        }
-      } else {
-          rightBarButtonItems?.remove(PPKBarButtonItem.settingsButtonItem);
-          leftBarButtonItems?.remove(PPKBarButtonItem.settingsButtonItem);
-      }
-    }
-    // PPKThumbnailBarMode thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
-    if (thumbnailBarEnabled != null) {
-      if (thumbnailBarEnabled) {
-        if (thumbnailBarMode == PPKThumbnailBarMode.none) {
-          thumbnailBarMode = PPKThumbnailBarMode.floatingScrubberBar;
-        }
-      } else {
-        thumbnailBarMode = PPKThumbnailBarMode.none;
-      }
-    }
-
-    // PRINT
-    if (printingEnabled != null) {
-      if (printingEnabled) {
-        bool printButtonAlreadyExists = true;
-        if ((rightBarButtonItems == null || rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false) &&
-            (leftBarButtonItems == null || leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false)) {
-          printButtonAlreadyExists = false;
-        }
-
-        // if it is not, let's add it to a right bar-button list
-        if (!printButtonAlreadyExists) {
-          if (rightBarButtonItems == null) {
-            rightBarButtonItems = [];
-          }
-          rightBarButtonItems!.add(PPKBarButtonItem.printButtonItem);
-        }
-      } else {
-        rightBarButtonItems?.remove(PPKBarButtonItem.printButtonItem);
-        leftBarButtonItems?.remove(PPKBarButtonItem.printButtonItem);
-      }
-    }
-
-    // SHARING
-    if (sharingEnabled != null) {
-      if (sharingEnabled) {
-        bool shareButtonAlreadyExists = true;
-        if ((rightBarButtonItems == null || (rightBarButtonItems!.contains(PPKBarButtonItem.openInButtonItem) == false && rightBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) == false)) &&
-            (leftBarButtonItems == null || (leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem) == false && leftBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) == false))) {
-          shareButtonAlreadyExists = false;
-        }
-
-        // if it is not, let's add it to a right bar-button list
-        if (!shareButtonAlreadyExists) {
-          if (rightBarButtonItems == null) {
-            rightBarButtonItems = [];
-          }
-          rightBarButtonItems!.add(PPKBarButtonItem.openInButtonItem);
-        }
-      } else {
-        rightBarButtonItems?.remove(PPKBarButtonItem.openInButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.activityButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.emailButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.messageButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.openInButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.activityButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.emailButtonItem);
-        rightBarButtonItems?.remove(PPKBarButtonItem.messageButtonItem);
-      }
-    }
-
-    // Annotation List VIEW
-    if (annotationListEnabled != null) {
-      if (annotationListEnabled && (documentInfoViewEnabled == null || !documentInfoViewEnabled)) {
-        if (documentInfoOptions == null) {
-          documentInfoOptions = [
-            PPKDocumentInfoViewOption.annotations,
-          ];
-        } else {
-          documentInfoOptions!.add(PPKDocumentInfoViewOption.annotations);
-        }
-      } else {
-        documentInfoOptions?.remove(PPKDocumentInfoViewOption.annotations);
-      }
-    }
-
   }
 
   factory PPKConfiguration.fromJson(Map<String, dynamic> json) => _$PPKConfigurationFromJson(json);
@@ -644,65 +504,5 @@ class PPKConfiguration extends PPKMethodChannelObject {
   Map<String, dynamic> toJson() => _$PPKConfigurationToJson(this);
 
   // Because Android needs some settings differently,
-  bool get copyPasteEnabled =>
-      (this.allowedMenuActions != null) ? this.allowedMenuActions!.contains(PPKTextSelectionMenuAction.copy) : false;
   PPKAppearanceMode get theme => this.appearanceMode;
-  bool get documentInfoViewEnabled => (this.documentInfoOptions != null) ? this.documentInfoOptions!.length > 0 : false;
-  bool get bookmarkEditingEnabled => this.bookmarkIndicatorInteractionEnabled;
-  bool get outlineViewEnabled =>
-      (this.documentInfoOptions != null) ? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.outline) : false;
-
-  bool get searchEnabled {
-    if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
-      return true;
-    }
-    if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
-      return true;
-    }
-    return false;
-  }
-
-  bool get documentEditingEnabled => false;
-  bool get documentTitleOverlayEnabled => documentLabelEnabled != PPKAdaptiveConditional.no;
-
-  bool get settingsEnabled {
-    if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
-      return true;
-    }
-    if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.settingsButtonItem)) {
-      return true;
-    }
-    return false;
-  }
-
-  bool get thumbnailBarEnabled => thumbnailBarMode != PPKThumbnailBarMode.none;
-
-  bool get sharingEnabled {
-    if (rightBarButtonItems != null) {
-      return rightBarButtonItems!.contains(PPKBarButtonItem.openInButtonItem) ||
-          rightBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) ||
-          rightBarButtonItems!.contains(PPKBarButtonItem.emailButtonItem) ||
-          rightBarButtonItems!.contains(PPKBarButtonItem.messageButtonItem);
-    }
-    if (leftBarButtonItems != null) {
-      return leftBarButtonItems!.contains(PPKBarButtonItem.openInButtonItem) ||
-          leftBarButtonItems!.contains(PPKBarButtonItem.activityButtonItem) ||
-          leftBarButtonItems!.contains(PPKBarButtonItem.emailButtonItem) ||
-          leftBarButtonItems!.contains(PPKBarButtonItem.messageButtonItem);
-    }
-    return false;
-  }
-
-  bool get printingEnabled {
-    if (rightBarButtonItems != null && rightBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
-      return true;
-    }
-    if (leftBarButtonItems != null && leftBarButtonItems!.contains(PPKBarButtonItem.printButtonItem)) {
-      return true;
-    }
-    return false;
-  }
-
-  bool get annotationListEnabled =>
-      (this.documentInfoOptions != null) ? this.documentInfoOptions!.contains(PPKDocumentInfoViewOption.annotations) : false;
 }
