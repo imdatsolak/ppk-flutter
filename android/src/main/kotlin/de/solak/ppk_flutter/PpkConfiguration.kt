@@ -296,15 +296,14 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         false -> builder.disableDocumentInfoView()
       }
       "outlineViewEnabled" -> when (parseAsBoolean(value, true)) {
-
         true -> builder.enableOutline()
         false -> builder.disableOutline()
       }
-      "printEnabled" -> when (parseAsBoolean(value, true)) {
+      "printingEnabled" -> when (parseAsBoolean(value, true)) {
         true -> builder.enablePrinting()
         false -> builder.disablePrinting()
       }
-      "shareEnabled" -> when (parseAsBoolean(value, true)) {
+      "sharingEnabled" -> when (parseAsBoolean(value, true)) {
         true -> builder.setEnabledShareFeatures(ShareFeatures.all())
         false -> builder.setEnabledShareFeatures(ShareFeatures.none())
       }
