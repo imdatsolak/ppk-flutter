@@ -344,7 +344,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         true -> builder.enableAnnotationEditing()
         false -> builder.disableAnnotationEditing()
       }
-      "annotationsListEnabled" -> when (parseAsBoolean(value, true)) {
+      "annotationListEnabled" -> when (parseAsBoolean(value, true)) {
         true -> builder.enableAnntationList()
         false -> builder.disableAnnotationlist()
       }
