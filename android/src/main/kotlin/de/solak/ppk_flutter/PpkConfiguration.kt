@@ -345,8 +345,8 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         false -> builder.disableAnnotationEditing()
       }
       "annotationListEnabled" -> when (parseAsBoolean(value, true)) {
-        true -> builder.enableAnntationList()
-        false -> builder.disableAnnotationlist()
+        true -> builder.enableAnnotationList()
+        false -> builder.disableAnnotationList()
       }
       "imageSelectionEnabled" -> {			}
       "textSelectionMode" -> {			}
