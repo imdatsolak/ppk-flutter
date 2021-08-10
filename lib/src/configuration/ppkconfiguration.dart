@@ -485,6 +485,11 @@ class PPKConfiguration extends PPKMethodChannelObject {
         if (documentInfoOptions != null) {
           documentInfoOptions = [
             PPKDocumentInfoViewOption.outline,
+            PPKDocumentInfoViewOption.annotations,
+            PPKDocumentInfoViewOption.embeddedFiles,
+            PPKDocumentInfoViewOption.bookmarks,
+            PPKDocumentInfoViewOption.documentInfo,
+            PPKDocumentInfoViewOption.security,
           ];
         }
       } else {
@@ -498,11 +503,6 @@ class PPKConfiguration extends PPKMethodChannelObject {
         if (documentInfoOptions == null) {
           documentInfoOptions = [
             PPKDocumentInfoViewOption.outline,
-            PPKDocumentInfoViewOption.annotations,
-            PPKDocumentInfoViewOption.embeddedFiles,
-            PPKDocumentInfoViewOption.bookmarks,
-            PPKDocumentInfoViewOption.documentInfo,
-            PPKDocumentInfoViewOption.security,
           ];
         }
       } else {
