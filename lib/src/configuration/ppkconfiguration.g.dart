@@ -193,6 +193,7 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     thumbnailBarEnabled: json['thumbnailBarEnabled'] as bool?,
     printingEnabled: json['printingEnabled'] as bool?,
     sharingEnabled: json['sharingEnabled'] as bool?,
+    annotationListEnabled: json['annotationListEnabled'] as bool?,
   );
 }
 
@@ -380,6 +381,7 @@ Map<String, dynamic> _$PPKConfigurationToJson(PPKConfiguration instance) {
   val['thumbnailBarEnabled'] = instance.thumbnailBarEnabled;
   val['sharingEnabled'] = instance.sharingEnabled;
   val['printingEnabled'] = instance.printingEnabled;
+  val['annotationListEnabled'] = instance.annotationListEnabled;
   return val;
 }
 
