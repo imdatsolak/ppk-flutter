@@ -184,7 +184,6 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     copyPasteEnabled: json['copyPasteEnabled'] as bool?,
     bookmarkEditingEnabled: json['bookmarkEditingEnabled'] as bool?,
     documentInfoViewEnabled: json['documentInfoViewEnabled'] as bool?,
-    theme: _$enumDecodeNullable(_$PPKAppearanceModeEnumMap, json['theme']),
     outlineViewEnabled: json['outlineViewEnabled'] as bool?,
     searchEnabled: json['searchEnabled'] as bool?,
     documentEditingEnabled: json['documentEditingEnabled'] as bool?,
@@ -194,6 +193,7 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     printingEnabled: json['printingEnabled'] as bool?,
     sharingEnabled: json['sharingEnabled'] as bool?,
     annotationListEnabled: json['annotationListEnabled'] as bool?,
+    theme: _$enumDecodeNullable(_$PPKAppearanceModeEnumMap, json['theme']),
   );
 }
 
@@ -369,19 +369,20 @@ Map<String, dynamic> _$PPKConfigurationToJson(PPKConfiguration instance) {
   val['navigationButtonsEnabled'] = instance.navigationButtonsEnabled;
   val['pageNumberOverlayEnabled'] = instance.pageNumberOverlayEnabled;
   writeNotNull('startZoomScale', instance.startZoomScale);
-  val['copyPasteEnabled'] = instance.copyPasteEnabled;
+  writeNotNull('copyPasteEnabled', instance.copyPasteEnabled);
+  writeNotNull('bookmarkEditingEnabled', instance.bookmarkEditingEnabled);
+  writeNotNull('documentInfoViewEnabled', instance.documentInfoViewEnabled);
+  writeNotNull('outlineViewEnabled', instance.outlineViewEnabled);
+  writeNotNull('searchEnabled', instance.searchEnabled);
+  writeNotNull('documentEditingEnabled', instance.documentEditingEnabled);
+  writeNotNull(
+      'documentTitleOverlayEnabled', instance.documentTitleOverlayEnabled);
+  writeNotNull('settingsEnabled', instance.settingsEnabled);
+  writeNotNull('thumbnailBarEnabled', instance.thumbnailBarEnabled);
+  writeNotNull('printingEnabled', instance.printingEnabled);
+  writeNotNull('sharingEnabled', instance.sharingEnabled);
+  writeNotNull('annotationListEnabled', instance.annotationListEnabled);
   val['theme'] = _$PPKAppearanceModeEnumMap[instance.theme];
-  val['documentInfoViewEnabled'] = instance.documentInfoViewEnabled;
-  val['bookmarkEditingEnabled'] = instance.bookmarkEditingEnabled;
-  val['outlineViewEnabled'] = instance.outlineViewEnabled;
-  val['searchEnabled'] = instance.searchEnabled;
-  val['documentEditingEnabled'] = instance.documentEditingEnabled;
-  val['documentTitleOverlayEnabled'] = instance.documentTitleOverlayEnabled;
-  val['settingsEnabled'] = instance.settingsEnabled;
-  val['thumbnailBarEnabled'] = instance.thumbnailBarEnabled;
-  val['sharingEnabled'] = instance.sharingEnabled;
-  val['printingEnabled'] = instance.printingEnabled;
-  val['annotationListEnabled'] = instance.annotationListEnabled;
   return val;
 }
 
