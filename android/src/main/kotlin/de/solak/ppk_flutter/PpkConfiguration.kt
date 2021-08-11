@@ -247,14 +247,14 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       for (key in configurationDictionary.keys) {
         val value: Any? = configurationDictionary[key]
         if (value != null) {
-          parse(key, value, builder)
+          parse(key, value, builder, context)
         }
       }
     }
     configuration = builder.build()
   }
 
-  private fun parse(key: String, value: Any, builder: PdfActivityConfiguration.Builder) {
+  private fun parse(key: String, value: Any, builder: PdfActivityConfiguration.Builder, context: Context) {
     when (key) {
       "appearanceMode", "theme" -> parseThemeMode(value, builder)
       "documentPassword" -> documentPassword = parseAsString(value)
@@ -347,6 +347,8 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         true -> builder.enableAnnotationList()
         false -> builder.disableAnnotationList()
       }
+      "themeName" -> parseThemeName(value, builder, context)
+      "darkThemeName" -> parseDarkThemeName(value, builder, context)
       "imageSelectionEnabled" -> {			}
       "textSelectionMode" -> {			}
       "textSelectionShouldSnapToWord" -> {			}
@@ -412,6 +414,29 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
       "documentInfoOptions" -> {      }
       else -> { }
     }
+  }
+
+  private fun parseThemeName(value: Any, builder: PdfActivityConfiguration.Builder, context: Context) {
+    if (value is String) {
+      val darkThemeId = getStyleResourceId(value, context);
+      if (darkThemeId != 0) {
+        builder.theme(darkThemeId);
+      }
+    }
+  }
+
+  private fun parseDarkThemeName(value: Any, builder: PdfActivityConfiguration.Builder, context: Context) {
+    if (value is String) {
+      val darkThemeId = getStyleResourceId(value, context);
+      if (darkThemeId != 0) {
+        builder.themeDark(darkThemeId);
+      }
+    }
+  }
+
+  private fun getStyleResourceId(style: String, context: Context): Int {
+    val resourceId = context.resources.getIdentifier(style, "style", context.packageName)
+    return resourceId
   }
 
   private fun parseThemeMode(value: Any, builder: PdfActivityConfiguration.Builder) {

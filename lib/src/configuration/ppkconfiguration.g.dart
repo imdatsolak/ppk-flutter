@@ -195,6 +195,8 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     annotationListEnabled: json['annotationListEnabled'] as bool?,
     barButtonColor:
         colorFromJson(json['barButtonColor'] as Map<String, dynamic>?),
+    themeName: json['themeName'] as String?,
+    darkThemeName: json['darkThemeName'] as String?,
     theme: _$enumDecodeNullable(_$PPKAppearanceModeEnumMap, json['theme']),
   );
 }
@@ -385,6 +387,8 @@ Map<String, dynamic> _$PPKConfigurationToJson(PPKConfiguration instance) {
   writeNotNull('sharingEnabled', instance.sharingEnabled);
   writeNotNull('annotationListEnabled', instance.annotationListEnabled);
   writeNotNull('barButtonColor', colorToJson(instance.barButtonColor));
+  writeNotNull('themeName', instance.themeName);
+  writeNotNull('darkThemeName', instance.darkThemeName);
   val['theme'] = _$PPKAppearanceModeEnumMap[instance.theme];
   return val;
 }
