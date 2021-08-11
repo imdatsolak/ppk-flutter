@@ -253,6 +253,7 @@ class PPKConfiguration {
     public var toolbarTitle: String?
     public var pageIndex: UInt = 0
     public var appearanceMode: PDFAppearanceMode = []
+    public var tintColor: UIColor?
 
     init(fromArguments arguments: [String: Any], isImageDocument: Bool = false) {
         _isImageDocument = isImageDocument
@@ -649,6 +650,10 @@ class PPKConfiguration {
             case "settingsOptions":
                 if let v = value as? [String] {
                     builder.settingsOptions = _parseSettingsOptions(v)
+                }
+            case "barButtonColor":
+                if let v = value as? [String: Any], let ppkValue = _uicolor(fromDict: v) {
+                    tintColor = ppkValue
                 }
             case "documentInfoOptions":
                 if let v = value as? [String] {

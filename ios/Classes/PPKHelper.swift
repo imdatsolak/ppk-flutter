@@ -52,22 +52,28 @@ class PPKHelper {
         }
     }
 
-    static public func setLeftBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController) {
+    static public func setLeftBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController,
+                                             usingConfiguration configuration: PPKConfiguration) {
         if let items = items {
             pdfViewController.navigationItem.setLeftBarButtonItems(PPKHelper.getBarButtonItems(items, forViewController: pdfViewController), animated: false)
         }
     }
 
-    static public func setRightBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController) {
+    static public func setRightBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController,
+                                              usingConfiguration configuration: PPKConfiguration) {
         if let items = items {
             pdfViewController.navigationItem.setRightBarButtonItems(PPKHelper.getBarButtonItems(items, forViewController: pdfViewController), animated: false)
         }
     }
 
-    static private func getBarButtonItems(_ items: [String], forViewController pdfViewController: PDFViewController) -> [UIBarButtonItem] {
+    static private func getBarButtonItems(_ items: [String], forViewController pdfViewController: PDFViewController,
+                                          usingConfiguration configuration: PPKConfiguration) -> [UIBarButtonItem] {
         var barButtonItems: [UIBarButtonItem] = []
         for itemName in items {
             if let bbItem = barButtonItem(fromString: itemName, forViewController: pdfViewController) {
+                if (configuration.tintColor != null) {
+                    bbItem.tintColor = configuration.tintColor
+                }
                 barButtonItems.append(bbItem)
             }
         }

@@ -19,7 +19,7 @@ public class PPKPlatformView : NSObject, FlutterPlatformView {
     weak var flutterViewController: FlutterViewController?
     var pdfViewController: PDFViewController
     var navigationController: PDFNavigationController
-    
+
     init(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?, messenger: FlutterBinaryMessenger) {
         let channelName = "de.solak.ppk-flutter.widget.\(viewId)"
         self.platformViewId = viewId
@@ -40,11 +40,11 @@ public class PPKPlatformView : NSObject, FlutterPlatformView {
         super.init()
         self.channel.setMethodCallHandler(self.handleMethodCall)
     }
-    
+
     public func view() -> UIView {
         return self.navigationController.view ?? UIView()
     }
-    
+
     public func handleMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "initializePlatformView") {
             if let args = call.arguments as? [String:Any], let documentPath = args["document"] as? String, let document = PPKHelper.documentFrom(path: documentPath) {
@@ -59,8 +59,10 @@ public class PPKPlatformView : NSObject, FlutterPlatformView {
                 if let documentInfoOptions = configuration.documentInfoOptions {
                     self.pdfViewController.documentInfoCoordinator.availableControllerOptions = documentInfoOptions
                 }
-                PPKHelper.setLeftBarButtonItems(configuration.leftBarButtonItems, forViewController: self.pdfViewController)
-                PPKHelper.setRightBarButtonItems(configuration.rightBarButtonItems, forViewController: self.pdfViewController)
+                PPKHelper.setLeftBarButtonItems(configuration.leftBarButtonItems, forViewController: self.pdfViewController,
+                                                usingConfiguration: configuration)
+                PPKHelper.setRightBarButtonItems(configuration.rightBarButtonItems, forViewController: self.pdfViewController,
+                                                 usingConfiguration: configuration)
                 PPKHelper.setToolbarTitle(configuration.toolbarTitle, forViewController: self.pdfViewController)
                 self.navigationController.setViewControllers([self.pdfViewController], animated: false)
                 result(true)
@@ -72,7 +74,7 @@ public class PPKPlatformView : NSObject, FlutterPlatformView {
             PPKHelper.handleMethodCall(call, withViewController: self.pdfViewController, result: result)
         }
     }
-    
+
     private func cleanup() {
         self.pdfViewController.document = nil
         self.pdfViewController.view.removeFromSuperview()
