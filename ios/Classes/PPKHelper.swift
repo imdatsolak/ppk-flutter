@@ -58,8 +58,10 @@ class PPKHelper {
             pdfViewController.navigationItem.setLeftBarButtonItems(
                 PPKHelper.getBarButtonItems(items,
                                             forViewController: pdfViewController,
-                                            usingConfiguration: configuration),
-                animated: false)
+                                            usingConfiguration: configuration
+                                            ),
+                animated: false
+            )
         }
     }
 
@@ -69,8 +71,10 @@ class PPKHelper {
             pdfViewController.navigationItem.setRightBarButtonItems(
                 PPKHelper.getBarButtonItems(items,
                                             forViewController: pdfViewController,
-                                            usingConfiguration: configuration),
-                animated: false)
+                                            usingConfiguration: configuration
+                                            ),
+                animated: false
+            )
         }
     }
 
@@ -79,7 +83,7 @@ class PPKHelper {
         var barButtonItems: [UIBarButtonItem] = []
         for itemName in items {
             if let bbItem = barButtonItem(fromString: itemName, forViewController: pdfViewController) {
-                if (configuration.tintColor != null) {
+                if configuration.tintColor != nil {
                     bbItem.tintColor = configuration.tintColor
                 }
                 barButtonItems.append(bbItem)
