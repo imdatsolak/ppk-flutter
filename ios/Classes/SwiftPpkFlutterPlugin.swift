@@ -67,8 +67,10 @@ public class SwiftPpkFlutterPlugin: NSObject, FlutterPlugin {
             if let documentInfoOptions = configuration.documentInfoOptions {
                 pdfViewController.documentInfoCoordinator.availableControllerOptions = documentInfoOptions
             }
-            PPKHelper.setLeftBarButtonItems(configuration.leftBarButtonItems, forViewController: pdfViewController)
-            PPKHelper.setRightBarButtonItems(configuration.rightBarButtonItems, forViewController: pdfViewController)
+            PPKHelper.setLeftBarButtonItems(configuration.leftBarButtonItems, forViewController: pdfViewController,
+                                            usingConfiguration: configuration)
+            PPKHelper.setRightBarButtonItems(configuration.rightBarButtonItems, forViewController: pdfViewController,
+                                             usingConfiguration: configuration)
             PPKHelper.setToolbarTitle(configuration.toolbarTitle, forViewController: pdfViewController)
             self.pdfViewController = pdfViewController
             let navController = PDFNavigationController(rootViewController: pdfViewController)
