@@ -379,6 +379,9 @@ class PPKConfiguration extends PPKMethodChannelObject {
   @JsonKey(includeIfNull: false)
   bool? annotationListEnabled;
 
+  @JsonKey(fromJson: colorFromJson, toJson: colorToJson, includeIfNull: false)
+  Color? barButtonColor;
+
   PPKConfiguration({
     this.pageMode = PPKPageMode.automatic,
     this.pageTransition = PPKPageTransition.scrollPerSpread,
@@ -488,6 +491,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.printingEnabled,
     this.sharingEnabled,
     this.annotationListEnabled,
+    this.barButtonColor,
 
     // These are mainly for Android and short-cuts
     PPKAppearanceMode? theme, // same as appearanceMode

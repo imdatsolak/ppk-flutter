@@ -193,6 +193,8 @@ PPKConfiguration _$PPKConfigurationFromJson(Map<String, dynamic> json) {
     printingEnabled: json['printingEnabled'] as bool?,
     sharingEnabled: json['sharingEnabled'] as bool?,
     annotationListEnabled: json['annotationListEnabled'] as bool?,
+    barButtonColor:
+        colorFromJson(json['barButtonColor'] as Map<String, dynamic>?),
     theme: _$enumDecodeNullable(_$PPKAppearanceModeEnumMap, json['theme']),
   );
 }
@@ -382,6 +384,7 @@ Map<String, dynamic> _$PPKConfigurationToJson(PPKConfiguration instance) {
   writeNotNull('printingEnabled', instance.printingEnabled);
   writeNotNull('sharingEnabled', instance.sharingEnabled);
   writeNotNull('annotationListEnabled', instance.annotationListEnabled);
+  writeNotNull('barButtonColor', colorToJson(instance.barButtonColor));
   val['theme'] = _$PPKAppearanceModeEnumMap[instance.theme];
   return val;
 }

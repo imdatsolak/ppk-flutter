@@ -55,14 +55,22 @@ class PPKHelper {
     static public func setLeftBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController,
                                              usingConfiguration configuration: PPKConfiguration) {
         if let items = items {
-            pdfViewController.navigationItem.setLeftBarButtonItems(PPKHelper.getBarButtonItems(items, forViewController: pdfViewController), animated: false)
+            pdfViewController.navigationItem.setLeftBarButtonItems(
+                PPKHelper.getBarButtonItems(items,
+                                            forViewController: pdfViewController,
+                                            usingConfiguration: configuration),
+                animated: false)
         }
     }
 
     static public func setRightBarButtonItems(_ items: [String]?, forViewController pdfViewController: PDFViewController,
                                               usingConfiguration configuration: PPKConfiguration) {
         if let items = items {
-            pdfViewController.navigationItem.setRightBarButtonItems(PPKHelper.getBarButtonItems(items, forViewController: pdfViewController), animated: false)
+            pdfViewController.navigationItem.setRightBarButtonItems(
+                PPKHelper.getBarButtonItems(items,
+                                            forViewController: pdfViewController,
+                                            usingConfiguration: configuration),
+                animated: false)
         }
     }
 
