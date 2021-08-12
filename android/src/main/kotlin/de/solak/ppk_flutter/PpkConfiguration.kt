@@ -559,7 +559,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseThumbnailBarMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: ThumbnailBarMode? = thumbnailBarModeMap[value]
-      
+
       if (v != null) {
         builder.setThumbnailBarMode(v)
       }
