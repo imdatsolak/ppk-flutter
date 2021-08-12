@@ -347,8 +347,8 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
         true -> builder.enableAnnotationList()
         false -> builder.disableAnnotationList()
       }
-      "themeName" -> parseThemeName(value, builder, context)
-      "darkThemeName" -> parseDarkThemeName(value, builder, context)
+      "themeName" -> parseThemeName(value, builder, context, false)
+      "darkThemeName" -> parseThemeName(value, builder, context, true)
       "imageSelectionEnabled" -> {			}
       "textSelectionMode" -> {			}
       "textSelectionShouldSnapToWord" -> {			}
@@ -416,20 +416,16 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
     }
   }
 
-  private fun parseThemeName(value: Any, builder: PdfActivityConfiguration.Builder, context: Context) {
+  private fun parseThemeName(value: Any, builder: PdfActivityConfiguration.Builder, context: Context, isDarkTheme: Boolean) {
     if (value is String) {
-      val darkThemeId = getStyleResourceId(value, context);
-      if (darkThemeId != 0) {
-        builder.theme(darkThemeId);
-      }
-    }
-  }
+      val themeId = getStyleResourceId(value, context);
 
-  private fun parseDarkThemeName(value: Any, builder: PdfActivityConfiguration.Builder, context: Context) {
-    if (value is String) {
-      val darkThemeId = getStyleResourceId(value, context);
-      if (darkThemeId != 0) {
-        builder.themeDark(darkThemeId);
+      if (themeId != 0) {
+        if (isDarkTheme) {
+          builder.themeDark(themeId);
+        } else {
+          builder.theme(themeId);
+        }
       }
     }
   }
@@ -452,6 +448,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseLayoutMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: PageLayoutMode? = pageModeMap[value]
+
       if (v != null) {
         builder.layoutMode(v)
       }
@@ -461,6 +458,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parsePageScrollMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: PageScrollMode? = pageTransitionMap[value]
+
       if (v != null) {
         builder.scrollMode(v)
       }
@@ -470,6 +468,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parsePageFitMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: PageFitMode? = spreadFittingMap[value]
+
       if (v != null) {
         builder.fitMode(v)
       }
@@ -479,6 +478,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseScrollDirection(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: PageScrollDirection? = scrollDirectionMap[value]
+
       if (v != null) {
         builder.scrollDirection(v)
       }
@@ -508,6 +508,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseBookmarkIndicatorMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: Boolean? = bookmarkIndicatorModeMap[value]
+
       if (v != null) {
         if (v) {
           builder.enableBookmarkList()
@@ -521,6 +522,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseUserInterfaceViewMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: UserInterfaceViewMode? = userInterfaceViewModeMap[value]
+
       if (v != null) {
         builder.setUserInterfaceViewMode(v)
       }
@@ -530,6 +532,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseSearchMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: Int? = searchModeMap[value]
+
       if (v != null) {
         builder.setSearchType(v)
       }
@@ -556,6 +559,7 @@ class PpkConfiguration(arguments: Map<String, Any>, context: Context) {
   private fun parseThumbnailBarMode(value: Any, builder: PdfActivityConfiguration.Builder) {
     if (value is String) {
       val v: ThumbnailBarMode? = thumbnailBarModeMap[value]
+      
       if (v != null) {
         builder.setThumbnailBarMode(v)
       }

@@ -752,8 +752,8 @@ class PPKConfiguration {
     }
 
     private func _uicolor(fromDict dict: [String: Any]) -> UIColor? {
-        if let red = dict["red"] as? CGFloat, let green = dict["green"] as? CGFloat, let blue = dict["blue"] as? CGFloat, let alpha = dict["alpha"] as? CGFloat {
-            return UIColor(cgColor: CGColor(red: red, green: green, blue: blue, alpha: alpha))
+        if let red = dict["red"] as? Int, let green = dict["green"] as? Int, let blue = dict["blue"] as? Int, let alpha = dict["alpha"] as? Int {
+            return UIColor(red: CGFloat(red) / 256.0, green: CGFloat(green) / 256.0, blue: CGFloat(blue) / 256.0, alpha: CGFloat(alpha) / 256.0)
         }
         return nil
     }

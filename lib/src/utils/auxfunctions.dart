@@ -13,10 +13,10 @@ import "package:flutter/material.dart";
 Map<String, dynamic>? colorToJson(Color? color) {
   if (color != null) {
     return {
-      "red": color.red.toDouble() / 256.0,
-      "green": color.green.toDouble() / 256.0,
-      "blue": color.blue.toDouble() / 256.0,
-      "alpha": color.alpha.toDouble() / 256.0,
+      "red": color.red,
+      "green": color.green,
+      "blue": color.blue,
+      "alpha": color.alpha,
     };
   } else {
     return null;
