@@ -96,7 +96,7 @@ class PpkWatermarkedActivity: PpkActivity() {
 
     private fun updateScreenCoordinates() {
       val bounds = bounds
-      pdfToPageTransformation.mapRect(screenCoordinates, pageCoordinates)
+      getPdfToPageTransformation().mapRect(screenCoordinates, pageCoordinates)
       screenCoordinates.roundOut(bounds)
       setBounds(bounds)
     }
