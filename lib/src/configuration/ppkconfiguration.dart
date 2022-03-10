@@ -260,6 +260,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
   PPKEdgeInsets? thumbnailMargin;
 
   // Annotation Settings
+  bool annotationEditingEnabled = false;
   double annotationAnimationDuration = 0.25;
   bool annotationGroupingEnabled = true;
   PPKMarkupAnnotationMergeBehavior markupAnnotationMergeBehavior = PPKMarkupAnnotationMergeBehavior.ifColorMatches;
@@ -452,6 +453,7 @@ class PPKConfiguration extends PPKMethodChannelObject {
     this.thumbnailInteritemSpacing,
     this.thumbnailLineSpacing,
     this.thumbnailMargin,
+    this.annotationEditingEnabled = false,
     this.annotationAnimationDuration = 0.25,
     this.annotationGroupingEnabled = true,
     this.markupAnnotationMergeBehavior = PPKMarkupAnnotationMergeBehavior.ifColorMatches,
